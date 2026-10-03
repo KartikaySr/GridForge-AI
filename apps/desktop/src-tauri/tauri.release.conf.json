@@ -1,0 +1,12 @@
+{
+  "bundle": {
+    "active": true,
+    "targets": ["app"],
+    "resources": {
+      "../../../packaging/runtime/": "runtime/"
+    },
+    "macOS": {
+      "signingIdentity": "-"
+    }
+  }
+}

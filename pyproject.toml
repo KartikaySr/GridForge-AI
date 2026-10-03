@@ -1,0 +1,44 @@
+[project]
+name = "gridforge-foundation"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi==0.141.1",
+  "starlette==1.6.0",
+  "uvicorn[standard]==0.35.0",
+  "pydantic==2.11.7",
+  "httpx==0.28.1",
+  "psycopg[binary]>=3.2,<4",
+  "sqlglot>=27,<31",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8,<10",
+    "ruff>=0.12,<1",
+    "mypy>=1.16,<2",
+    "pyinstaller>=6.16,<7",
+    "pip-audit>=2.9,<3",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+extend-exclude = [".tooling", "packaging", "apps/desktop/src-tauri/target"]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+mypy_path = "apps/api"
+files = ["apps/api/app", "cloud", "edge", "services", "simulator", "tests/unit", "tests/integration", "scripts"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit", "tests/integration"]
+pythonpath = [".", "apps/api"]
+addopts = "-ra --strict-config --strict-markers"

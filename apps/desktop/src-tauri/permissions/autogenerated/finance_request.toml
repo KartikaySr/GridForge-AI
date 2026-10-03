@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-finance-request"
+description = "Enables the finance_request command without any pre-configured scope."
+commands.allow = ["finance_request"]
+
+[[permission]]
+identifier = "deny-finance-request"
+description = "Denies the finance_request command without any pre-configured scope."
+commands.deny = ["finance_request"]

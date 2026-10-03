@@ -1,0 +1,11 @@
+CREATE EXTENSION IF NOT EXISTS vector;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE TABLE organizations(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),name text NOT NULL,created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE facilities(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),organization_id uuid NOT NULL REFERENCES organizations(id),name text NOT NULL,timezone text NOT NULL DEFAULT 'Asia/Kolkata',contracted_demand_kva numeric(14,3),created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE assets(id text PRIMARY KEY,facility_id uuid REFERENCES facilities(id),name text NOT NULL,asset_type text NOT NULL,line_name text,rated_load_kw numeric(14,3),flexibility_kw numeric(14,3) DEFAULT 0,criticality text NOT NULL DEFAULT 'medium',created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE telemetry_logs(id bigint GENERATED ALWAYS AS IDENTITY,ts timestamptz NOT NULL,asset_id text NOT NULL REFERENCES assets(id),voltage numeric(10,3),current numeric(14,3),active_power_kw numeric(14,3) NOT NULL,vibration numeric(12,5),quality text NOT NULL DEFAULT 'valid',PRIMARY KEY(ts,id));
+CREATE INDEX telemetry_asset_ts_idx ON telemetry_logs(asset_id,ts DESC);
+CREATE TABLE model_predictions(id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,facility_id uuid REFERENCES facilities(id),generated_at timestamptz NOT NULL DEFAULT now(),horizon_minutes integer NOT NULL,predicted_peak_kw numeric(14,3) NOT NULL,peak_probability numeric(6,3),model_version text NOT NULL);
+CREATE TABLE optimization_runs(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),facility_id uuid REFERENCES facilities(id),prediction_id bigint REFERENCES model_predictions(id),status text NOT NULL,expected_reduction_kw numeric(14,3),expected_savings_inr numeric(14,2),created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE dispatch_commands(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),optimization_run_id uuid REFERENCES optimization_runs(id),asset_id text REFERENCES assets(id),action text NOT NULL,status text NOT NULL DEFAULT 'proposed',approved_by uuid,created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE arbitrage_events(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),dispatch_command_id uuid REFERENCES dispatch_commands(id),baseline_kwh numeric(14,4),actual_kwh numeric(14,4),verified_savings_inr numeric(14,2),created_at timestamptz NOT NULL DEFAULT now());

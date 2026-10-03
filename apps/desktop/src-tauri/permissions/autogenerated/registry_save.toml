@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-registry-save"
+description = "Enables the registry_save command without any pre-configured scope."
+commands.allow = ["registry_save"]
+
+[[permission]]
+identifier = "deny-registry-save"
+description = "Denies the registry_save command without any pre-configured scope."
+commands.deny = ["registry_save"]

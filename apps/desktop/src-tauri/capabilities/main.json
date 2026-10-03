@@ -1,0 +1,23 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main",
+  "description": "Only local lifecycle and redacted health commands for the main desktop window",
+  "windows": ["main"],
+  "permissions": [
+    "allow-runtime-status",
+    "allow-runtime-restart",
+    "allow-runtime-stop",
+    "allow-runtime-diagnostics",
+    "allow-simulator-scenario",
+    "allow-telemetry-history",
+    "allow-registry-read",
+    "allow-registry-save",
+    "allow-intelligence-read",
+    "allow-optimization-request",
+    "allow-dispatch-request",
+    "allow-finance-request",
+    "allow-sync-read",
+    "allow-ai-request",
+    "allow-security-request"
+  ]
+}

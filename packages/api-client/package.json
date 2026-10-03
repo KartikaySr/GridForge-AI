@@ -1,0 +1,18 @@
+{
+  "name": "@gridforge/api-client",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "types": "index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "generate": "openapi-typescript runtime.openapi.json -o runtime.generated.ts && openapi-typescript cloud.openapi.json -o cloud.generated.ts",
+    "check": "node check.mjs"
+  },
+  "devDependencies": {
+    "openapi-typescript": "7.13.0",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS local_users (
+ id TEXT PRIMARY KEY, username TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL,
+ salt TEXT NOT NULL, role TEXT NOT NULL, enabled INTEGER NOT NULL CHECK(enabled IN (0,1)),
+ revision INTEGER NOT NULL, created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS local_sessions (
+ id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES local_users(id),
+ user_revision INTEGER NOT NULL, instance_id TEXT NOT NULL, expires_at TEXT NOT NULL,
+ revoked INTEGER NOT NULL DEFAULT 0 CHECK(revoked IN (0,1))
+);
+CREATE TABLE IF NOT EXISTS security_audit (
+ sequence INTEGER PRIMARY KEY AUTOINCREMENT, event_id TEXT NOT NULL UNIQUE,
+ body TEXT NOT NULL CHECK(json_valid(body)), previous_hash TEXT NOT NULL, digest TEXT NOT NULL
+);
+CREATE TRIGGER IF NOT EXISTS audit_no_update BEFORE UPDATE ON security_audit
+ BEGIN SELECT RAISE(ABORT,'AUDIT_IMMUTABLE'); END;
+CREATE TRIGGER IF NOT EXISTS audit_no_delete BEFORE DELETE ON security_audit
+ BEGIN SELECT RAISE(ABORT,'AUDIT_IMMUTABLE'); END;
+CREATE TABLE IF NOT EXISTS runtime_metrics (
+ route TEXT PRIMARY KEY, requests INTEGER NOT NULL DEFAULT 0, failures INTEGER NOT NULL DEFAULT 0,
+ duration_ms_total REAL NOT NULL DEFAULT 0, duration_ms_max REAL NOT NULL DEFAULT 0
+);
+CREATE TABLE IF NOT EXISTS migration_history (
+ version INTEGER PRIMARY KEY, digest TEXT NOT NULL, applied_at TEXT NOT NULL
+);

@@ -1,0 +1,386 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GridForge Cloud Sync",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/sync/state": {
+      "get": {
+        "summary": "State",
+        "operationId": "state_api_v1_sync_state_get",
+        "parameters": [
+          {
+            "name": "X-Edge-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Edge-Id"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloudSyncState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sync/batches": {
+      "post": {
+        "summary": "Upload",
+        "operationId": "upload_api_v1_sync_batches_post",
+        "parameters": [
+          {
+            "name": "X-Edge-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Edge-Id"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyncBatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncAck"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CloudStreamCursor": {
+        "properties": {
+          "stream": {
+            "type": "string",
+            "enum": [
+              "telemetry",
+              "registry",
+              "intelligence",
+              "optimization",
+              "dispatch",
+              "finance",
+              "ai"
+            ],
+            "title": "Stream"
+          },
+          "acknowledged_sequence": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Acknowledged Sequence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["stream", "acknowledged_sequence"],
+        "title": "CloudStreamCursor"
+      },
+      "CloudSyncState": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "edge_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Edge Id"
+          },
+          "org_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Org Id"
+          },
+          "facility_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Facility Id"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "cursors": {
+            "items": {
+              "$ref": "#/components/schemas/CloudStreamCursor"
+            },
+            "type": "array",
+            "title": "Cursors"
+          },
+          "mode": {
+            "type": "string",
+            "const": "SIMULATION",
+            "title": "Mode",
+            "default": "SIMULATION"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "edge_id",
+          "org_id",
+          "facility_id",
+          "observed_at",
+          "cursors"
+        ],
+        "title": "CloudSyncState"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "SyncAck": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "edge_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Edge Id"
+          },
+          "stream": {
+            "type": "string",
+            "enum": [
+              "telemetry",
+              "registry",
+              "intelligence",
+              "optimization",
+              "dispatch",
+              "finance",
+              "ai"
+            ],
+            "title": "Stream"
+          },
+          "acknowledged_sequence": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Acknowledged Sequence"
+          },
+          "accepted": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Accepted"
+          },
+          "replayed": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Replayed"
+          },
+          "committed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Committed At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "edge_id",
+          "stream",
+          "acknowledged_sequence",
+          "accepted",
+          "replayed",
+          "committed_at"
+        ],
+        "title": "SyncAck"
+      },
+      "SyncBatch": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "edge_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Edge Id"
+          },
+          "stream": {
+            "type": "string",
+            "enum": [
+              "telemetry",
+              "registry",
+              "intelligence",
+              "optimization",
+              "dispatch",
+              "finance",
+              "ai"
+            ],
+            "title": "Stream"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/SyncEntry"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Entries"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["edge_id", "stream", "entries"],
+        "title": "SyncBatch"
+      },
+      "SyncEntry": {
+        "properties": {
+          "sequence": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Sequence"
+          },
+          "event_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Event Id"
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest"
+          },
+          "body": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Body"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["sequence", "event_id", "digest", "body"],
+        "title": "SyncEntry"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "EdgeToken": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "EdgeToken": []
+    }
+  ]
+}

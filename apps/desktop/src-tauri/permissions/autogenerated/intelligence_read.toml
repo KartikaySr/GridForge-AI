@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-intelligence-read"
+description = "Enables the intelligence_read command without any pre-configured scope."
+commands.allow = ["intelligence_read"]
+
+[[permission]]
+identifier = "deny-intelligence-read"
+description = "Denies the intelligence_read command without any pre-configured scope."
+commands.deny = ["intelligence_read"]

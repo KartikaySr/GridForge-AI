@@ -1,0 +1,3 @@
+# Dependencies are managed in root pyproject.toml and uv.lock.
+# From the repository root: uv sync --locked
+# Do not maintain a second dependency list here.

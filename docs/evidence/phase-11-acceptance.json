@@ -1,0 +1,49 @@
+{
+  "verified_on": "2026-10-03",
+  "mode": "SIMULATION",
+  "clock": "ACCELERATED_ISOLATED",
+  "scope": "Local simulation acceptance; not industrial deployment or utility settlement",
+  "steps": [
+    "normal",
+    "bad",
+    "peak",
+    "propose",
+    "approve",
+    "verify",
+    "explain",
+    "disconnect",
+    "reconnect"
+  ],
+  "telemetry_rows": 3995,
+  "acknowledged_domain_events": 4041,
+  "pending_events": 0,
+  "audit_integrity_ok": true,
+  "command_state": "COMPLETED",
+  "verification_status": "VERIFIED",
+  "execution_valid_seconds": 60,
+  "rebound_valid_seconds": 60,
+  "simulated_net_energy_value": "1.84",
+  "currency": "USD",
+  "synthetic_rate_per_kwh": "0.15",
+  "baseline_method": "pre-dispatch-rolling-mean-flat-v1",
+  "demand_charge_status": "INCOMPLETE",
+  "tests": {
+    "python_passed": 174,
+    "python_skipped": 0,
+    "frontend_passed": 39,
+    "native_passed": 3
+  },
+  "checks": {
+    "format_lint_types_contracts_build": "PASS",
+    "canonical_demo": "PASS",
+    "frozen_runtime_smoke": "PASS",
+    "existing_macos_adhoc_signature": "PASS"
+  },
+  "limitations": [
+    "Synthetic input and financial output",
+    "Rolling-mean forecasting; no trained ML",
+    "Extractive retrieval; no generative LLM",
+    "Hosted GitHub CI not yet verified",
+    "Existing macOS bundle verified; no new application code in publication pass"
+  ]
+}

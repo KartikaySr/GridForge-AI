@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-optimization-request"
+description = "Enables the optimization_request command without any pre-configured scope."
+commands.allow = ["optimization_request"]
+
+[[permission]]
+identifier = "deny-optimization-request"
+description = "Denies the optimization_request command without any pre-configured scope."
+commands.deny = ["optimization_request"]

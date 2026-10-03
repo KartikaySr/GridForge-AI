@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-dispatch-request"
+description = "Enables the dispatch_request command without any pre-configured scope."
+commands.allow = ["dispatch_request"]
+
+[[permission]]
+identifier = "deny-dispatch-request"
+description = "Denies the dispatch_request command without any pre-configured scope."
+commands.deny = ["dispatch_request"]

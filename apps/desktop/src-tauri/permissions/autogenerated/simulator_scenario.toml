@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-simulator-scenario"
+description = "Enables the simulator_scenario command without any pre-configured scope."
+commands.allow = ["simulator_scenario"]
+
+[[permission]]
+identifier = "deny-simulator-scenario"
+description = "Denies the simulator_scenario command without any pre-configured scope."
+commands.deny = ["simulator_scenario"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-registry-read"
+description = "Enables the registry_read command without any pre-configured scope."
+commands.allow = ["registry_read"]
+
+[[permission]]
+identifier = "deny-registry-read"
+description = "Denies the registry_read command without any pre-configured scope."
+commands.deny = ["registry_read"]

@@ -1,0 +1,56 @@
+name: Desktop and runtime checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm install --global npm@10.9.8
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.12.15'
+          enable-cache: true
+      - run: uv python install
+      - run: npm ci
+      - run: uv sync --locked
+      - run: sudo apt-get update && sudo apt-get install -y postgresql
+      - run: echo "$(pg_config --bindir)" >> "$GITHUB_PATH"
+      - run: npm run check
+      - run: npm audit --audit-level=low
+      - run: uv run pip-audit
+      - run: uv run python -m scripts.telemetry_load --batches 2000
+      - run: npm run demo:verify
+
+  native:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm install --global npm@10.9.8
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.12.15'
+          enable-cache: true
+      - run: uv python install
+      - run: uv sync --locked
+      - run: npm ci
+      - run: rustup show
+      - run: npm run build
+      - run: npm run native:check
+      - run: cargo install cargo-audit --version 0.22.2 --locked
+      - run: node scripts/native.mjs audit
+      - run: npm run desktop:package
+      - run: uv run python -m scripts.smoke_packaged_runtime "apps/desktop/src-tauri/target/release/bundle/macos/GridForge AI.app/Contents/Resources/runtime/gridforge-edge/gridforge-edge"

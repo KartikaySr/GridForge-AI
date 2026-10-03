@@ -1,0 +1,20 @@
+[package]
+name = "gridforge-desktop"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.98"
+
+[lib]
+name = "gridforge_desktop"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+uuid = { version = "1", features = ["v4"] }
+rand = "0.9"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json"] }
