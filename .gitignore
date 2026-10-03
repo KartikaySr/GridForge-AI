@@ -33,3 +33,6 @@ packaging/
 
 # Private resume preparation notes contain local machine paths.
 docs/06-engineering/RESUME_PROJECT_FACTS.md
+
+# Keep competition submission materials local.
+docs/submission/

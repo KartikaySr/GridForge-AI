@@ -222,15 +222,6 @@ tests/                 Python unit and integration coverage
 docs/                  Architecture, decisions, operating guides and phase evidence
 ```
 
-## Yuva Yodha Smart Manufacturing idea submission
-
-The [12-slide PowerPoint](docs/submission/GridForge_AI_Yuva_Yodha_Idea_Submission.pptx),
-[detailed solution](docs/submission/SOLUTION_WRITEUP.md) and
-[421-word application description](docs/submission/APPLICATION_DESCRIPTION.md)
-address the supplied Indian SME challenge. The submission clearly separates tested
-software behavior from an illustrative 2% electricity SEC target and assumed pilot
-economics. Factory throughput and quality preservation still require field validation.
-
 ## Documentation library
 
 - **Start here:** [Context index](docs/00-master/CONTEXT_INDEX.md) and [product requirements](docs/01-product/DESKTOP_SRS.md).
