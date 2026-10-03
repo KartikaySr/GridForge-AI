@@ -1,0 +1,40 @@
+{
+  "status": "ANALYTICAL_ASSUMPTIONS_NOT_FIELD_RESULTS",
+  "baseline_monthly_kwh": 100000,
+  "good_tonnes_both_cases": 100,
+  "auxiliary_monthly_kwh": 20000,
+  "reject_rate_both_cases": 0.03,
+  "assumed_inr_per_kwh": 8,
+  "installation_inr": 120000,
+  "monthly_subscription_inr": 3000,
+  "monthly_maintenance_inr": 1000,
+  "cases": [
+    {
+      "case": "Low",
+      "auxiliary_reduction_fraction": 0.05,
+      "monthly_saved_kwh": 1000.0,
+      "electricity_sec_kwh_per_good_t": 990.0,
+      "monthly_gross_inr": 8000.0,
+      "monthly_net_inr": 4000.0,
+      "simple_payback_months": 30.0
+    },
+    {
+      "case": "Base",
+      "auxiliary_reduction_fraction": 0.1,
+      "monthly_saved_kwh": 2000.0,
+      "electricity_sec_kwh_per_good_t": 980.0,
+      "monthly_gross_inr": 16000.0,
+      "monthly_net_inr": 12000.0,
+      "simple_payback_months": 10.0
+    },
+    {
+      "case": "High",
+      "auxiliary_reduction_fraction": 0.15,
+      "monthly_saved_kwh": 3000.0,
+      "electricity_sec_kwh_per_good_t": 970.0,
+      "monthly_gross_inr": 24000.0,
+      "monthly_net_inr": 20000.0,
+      "simple_payback_months": 6.0
+    }
+  ]
+}
