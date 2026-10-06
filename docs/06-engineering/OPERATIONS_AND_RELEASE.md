@@ -65,3 +65,9 @@ Deployment acceptance additionally needs tenant enrollment/identity federation, 
 - `npm run desktop:package`: standalone simulation app; run its bundled runtime from a temporary working directory to verify source independence.
 
 Accessibility checks cover labeled authentication controls, names/ARIA, keyboard focus, skip navigation and semantic status messages. Automated DOM checks do not replace assistive-technology testing on each supported OS.
+
+## Prototype runtime ownership
+
+The native runtime acquires an exclusive process-lifetime lock beside its database before startup. A second native runtime targeting the same resolved database path fails closed. On POSIX hosts the kernel releases ownership when the process exits, including a crash; the lock file remains and must not be deleted while any runtime is running. This prevents two simulator owners, not all administrative access: offline repair/backup tooling still requires the documented maintenance procedure. Independent databases and ephemeral in-memory demonstrations can run separately.
+
+The ownership implementation currently supports POSIX hosts. Windows needs its own tested locking implementation before claiming Windows desktop support. The current release remains a macOS local prototype. Closing the UI stops its runtime; database ownership is not an unattended-service implementation.

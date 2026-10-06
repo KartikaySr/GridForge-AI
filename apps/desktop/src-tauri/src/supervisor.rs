@@ -553,6 +553,9 @@ impl Supervisor {
                 | "authorize"
                 | "demo"
                 | "demo-step"
+                | "incidents"
+                | "incident-history"
+                | "incident-action"
                 | "reports"
                 | "report-create"
                 | "report-compare"
@@ -909,6 +912,9 @@ fn run_worker(
                 }
                 let result = if let Some(child) = session.as_ref() {
                     let (route, post) = match operation.as_str() {
+                        "incidents" => ("/api/v1/incidents", false),
+                        "incident-history" => ("/api/v1/incidents/history", true),
+                        "incident-action" => ("/api/v1/incidents/actions", true),
                         "reports" => ("/api/v1/reports", false),
                         "report-create" => ("/api/v1/reports/production", true),
                         "report-compare" => ("/api/v1/reports/compare", true),
@@ -1208,6 +1214,9 @@ mod tests {
             .unwrap();
         assert_eq!(demo["risk"], "CLEAR");
         assert_eq!(demo["telemetry_rows"], 1505);
+        let incidents = supervisor.security("incidents".into(), None).unwrap();
+        assert_eq!(incidents["mode"], "SIMULATION");
+        assert_eq!(incidents["total"], 0);
         let reports = supervisor.security("reports".into(), None).unwrap();
         assert_eq!(reports["mode"], "SIMULATION");
         assert!(reports["reports"].as_array().unwrap().is_empty());

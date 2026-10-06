@@ -1,3 +1,4 @@
+import { Incidents } from './pages/Incidents';
 import { Reports } from './pages/Reports';
 import { IdentityGate } from './components/IdentityGate';
 import { Demonstration } from './pages/Demonstration';
@@ -46,6 +47,7 @@ const groups = [
       ['Verification & Savings', 7],
       ['AI Copilot', 9],
       ['Production & Reports', 12],
+      ['Alerts & Incidents', 12],
     ],
   },
   {
@@ -205,6 +207,7 @@ export function App() {
             </div>
             {page === 'Command Center' ? (
               <CommandCenter
+                desktop={runtime.desktop}
                 snapshot={runtime.snapshot}
                 openHealth={() => setPage('System Health')}
               />
@@ -224,6 +227,8 @@ export function App() {
             ) : page === 'Energy & Tariffs' ||
               page === 'Verification & Savings' ? (
               <Finance desktop={runtime.desktop} page={page} />
+            ) : page === 'Alerts & Incidents' ? (
+              <Incidents desktop={runtime.desktop} />
             ) : page === 'Production & Reports' ? (
               <Reports desktop={runtime.desktop} />
             ) : page === 'AI Copilot' ? (

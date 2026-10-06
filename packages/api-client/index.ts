@@ -63,3 +63,6 @@ export type ReportComparisonRequest =
   components['schemas']['ReportComparisonRequest'];
 export type ReportComparison = components['schemas']['ReportComparison'];
 export type ReportingSnapshot = components['schemas']['ReportingSnapshot'];
+export type Incident = components['schemas']['Incident'];
+export type IncidentAction = components['schemas']['IncidentAction'];
+export type IncidentSnapshot = components['schemas']['IncidentSnapshot'];

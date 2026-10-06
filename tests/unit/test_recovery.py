@@ -20,7 +20,7 @@ def test_live_backup_restore_replay_and_no_overwrite(tmp_path: Path) -> None:
     repo.ingest(incoming, NOW)
     AuditService(repo).record("test", "success")
     result = backup(source, saved)
-    assert result["schema_version"] == 10
+    assert result["schema_version"] == 11
     repo.ingest(batch(repo, 2), NOW)
     restore(saved, recovered)
     restored = Repository(recovered)
@@ -55,4 +55,4 @@ os._exit(23)
     assert repo.state()[2]["accepted"] == 5
     assert len(repo.history()) == len(repo.events()) == 5
     repo.close()
-    assert validate(path)["schema_version"] == 10
+    assert validate(path)["schema_version"] == 11

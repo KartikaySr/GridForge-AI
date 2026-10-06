@@ -1,3 +1,8 @@
+import type {
+  Incident,
+  IncidentAction,
+  IncidentSnapshot,
+} from '@gridforge/api-client';
 import { invoke, isTauri } from '@tauri-apps/api/core';
 import type {
   ProductionWrite,
@@ -95,6 +100,20 @@ export const initialRuntime: RuntimeSnapshot = {
 };
 export const isDesktop = () => typeof window !== 'undefined' && isTauri();
 export const runtimeBridge = {
+  incidents: (before: number | null = null) =>
+    withTimeout(
+      invoke<IncidentSnapshot>('security_request', {
+        operation: before ? 'incident-history' : 'incidents',
+        write: before ? { before } : null,
+      }),
+    ),
+  incidentAction: (write: IncidentAction) =>
+    withTimeout(
+      invoke<Incident>('security_request', {
+        operation: 'incident-action',
+        write,
+      }),
+    ),
   reports: (before: number | null = null) =>
     withTimeout(
       invoke<ReportingSnapshot>('security_request', {

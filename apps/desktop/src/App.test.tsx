@@ -20,6 +20,7 @@ vi.mock('./lib/runtime', async (importOriginal) => {
     isDesktop: vi.fn(() => false),
     runtimeBridge: {
       status: vi.fn(),
+      intelligence: vi.fn().mockRejectedValue(new Error('unavailable')),
       identity: vi.fn().mockResolvedValue({
         authenticated: true,
         setup_required: false,

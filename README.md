@@ -34,6 +34,8 @@ GridForge keeps those distinctions explicit. It joins local telemetry, evidence-
 
 This is a working engineering prototype for plant operators and energy managers. General production scheduling, tariff arbitrage and real industrial VPP participation remain future work.
 
+The current [desktop prototype scope](docs/00-master/DESKTOP_PROTOTYPE_SCOPE.md) covers local simulation workflows; web/mobile and the broader industrial product roadmap remain separate.
+
 ## What works today
 
 - **Local telemetry:** approximately 1 Hz per simulated asset, bounded ingestion, deduplication, normalized units, mapping validation and durable history.
@@ -44,6 +46,8 @@ This is a working engineering prototype for plant operators and energy managers.
 - **Production reporting:** immutable local simulation reports, declared good/rejected output, complete-window electricity intensity and comparisons that withhold improvement claims when production regresses.
 - **Durable synchronization:** seven versioned event streams, transactional outboxes, idempotent PostgreSQL receipt and visible backlog/conflict state.
 - **Inspectable explanations:** constraint reasons, cited source excerpts and restricted SELECT-only reporting queries.
+- **Demand-risk incidents:** durable source processing, revision-safe investigation/closure, explicit superseded evidence and no dispatch authority.
+- **Command Center:** fresh simulated load, baseline forecast, threshold/headroom and an evidence-gated chart.
 - **Desktop operations:** local accounts and roles, hash-chained audit, diagnostics, recovery tools and a packaged macOS application with an embedded Python runtime.
 
 ## Watch the complete workflow
@@ -199,6 +203,8 @@ The [6 October reporting acceptance](docs/evidence/phase-12a-acceptance.json) re
 Local identities use salted password hashing, scoped permissions, expiring sessions and revocation. Native transport credentials stay out of React. Restricted reporting queries cannot become an OT write path. Audit records use append-only protections and a hash chain; a privileged machine owner is outside that local tamper-evidence guarantee.
 
 Before an industrial deployment, the project needs site-specific commissioning, independent interlocks, credential lifecycle controls, unattended hosting, production distribution, external audit anchoring and operational validation. Existing dependency review findings are documented rather than suppressed. See [operations and release](docs/06-engineering/OPERATIONS_AND_RELEASE.md) and the [dependency review](docs/05-security/PHASE_10_DEPENDENCY_REVIEW.md).
+
+See [Phase 12B acceptance](docs/00-master/PHASE_12B_COMPLETION_REPORT.md) for the latest 236-test source/native verification and prototype limits.
 
 ## Release scope and deployment preparation
 

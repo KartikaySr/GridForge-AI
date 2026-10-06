@@ -39,7 +39,8 @@ def test_phase2_upgrade_keeps_identity_history_sequence_and_outbox(tmp_path: Pat
     identity = repo.facility_id
     before = repo.history()
     repo.db.executescript(
-        "DROP TABLE production_reports; "
+        "DROP TABLE incidents; DROP TABLE incident_requests; DROP TABLE incident_history; "
+        "DROP TABLE incident_cursor; DROP TABLE production_reports; "
         "DROP TABLE sync_conflicts; DROP TABLE sync_streams; DROP TABLE edge_identity; "
         "DROP TABLE finance_outbox; DROP TABLE finance_ledger; "
         "DROP TABLE finance_verifications; DROP TABLE finance_tariffs; "
@@ -53,7 +54,7 @@ def test_phase2_upgrade_keeps_identity_history_sequence_and_outbox(tmp_path: Pat
     )
     repo.close()
     upgraded = Repository(path)
-    assert upgraded.db.execute("PRAGMA user_version").fetchone()[0] == 10
+    assert upgraded.db.execute("PRAGMA user_version").fetchone()[0] == 11
     assert upgraded.facility_id == identity
     assert upgraded.history() == before
     assert upgraded.state()[0] == 40

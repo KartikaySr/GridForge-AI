@@ -1,3 +1,4 @@
+import { DemandOverview } from '../components/DemandOverview';
 import {
   ArrowRight,
   CheckCircle2,
@@ -10,14 +11,21 @@ import { StatusBadge } from '../components/StatusBadge';
 
 export function CommandCenter({
   snapshot,
+  desktop = false,
   openHealth,
 }: {
   snapshot: RuntimeSnapshot;
+  desktop?: boolean;
   openHealth: () => void;
 }) {
   const fresh = hasFreshHealth(snapshot);
   return (
     <>
+      <DemandOverview
+        desktop={desktop}
+        telemetry={snapshot.telemetry}
+        fresh={fresh}
+      />
       <section className="overviewGrid" aria-label="Platform readiness">
         <div className="metric">
           <Server size={18} />
@@ -55,7 +63,9 @@ export function CommandCenter({
           <CircleDashed size={18} />
           <span>TELEMETRY</span>
           <strong>
-            {fresh && snapshot.telemetry
+            {fresh &&
+            snapshot.telemetry?.assets.length &&
+            snapshot.telemetry.assets.every((a) => a.status === 'LIVE')
               ? 'Simulation active'
               : 'Not connected'}
           </strong>
@@ -122,7 +132,7 @@ export function CommandCenter({
         </section>
         <section className="surface">
           <span className="eyebrow">OPERATIONAL BOUNDARY</span>
-          <h2>Local shell is the first step</h2>
+          <h2>Prototype operating boundary</h2>
           <p className="muted">
             API readiness confirms communication with the runtime. It does not
             establish readiness for optimization, dispatch or financial
@@ -130,20 +140,18 @@ export function CommandCenter({
           </p>
           <dl className="keyValues">
             <dt>Cloud connection</dt>
-            <dd>Not configured</dd>
+            <dd>{fresh ? snapshot.health?.cloud_state : 'Unavailable'}</dd>
             <dt>Synchronization</dt>
-            <dd>Not implemented</dd>
+            <dd>{fresh ? snapshot.health?.sync_state : 'Unavailable'}</dd>
             <dt>User identity</dt>
-            <dd>Local session only</dd>
+            <dd>Local role-based sign-in</dd>
             <dt>Operational authority</dt>
-            <dd>Not provisioned</dd>
+            <dd>Authorized simulation only</dd>
           </dl>
         </section>
       </div>
       <section className="surface">
-        <span className="eyebrow">
-          PLATFORM DECISION CHAIN · TARGET ARCHITECTURE
-        </span>
+        <span className="eyebrow">PLATFORM DECISION CHAIN · SIMULATION</span>
         <div className="decisionChain">
           {[
             'Telemetry',

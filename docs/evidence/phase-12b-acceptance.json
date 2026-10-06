@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-06",
+  "scope": "Local desktop simulation prototype: incidents, demand overview, native database ownership",
+  "mode": "SIMULATION",
+  "tests": {
+    "python_passed": 188,
+    "frontend_passed": 45,
+    "rust_passed": 3,
+    "total_passed": 236,
+    "python_skipped": 0
+  },
+  "checks": {
+    "format_lint_types_contracts_build": "PASS",
+    "native_fmt_clippy_tests": "PASS",
+    "macos_package": "PASS",
+    "frozen_runtime_smoke": "PASS",
+    "final_demand_and_incident_ui_tests": "PASS"
+  },
+  "schema_version": 11,
+  "distribution": "macOS ad-hoc signed; no notarization",
+  "incident_sync": "LOCAL_ONLY",
+  "unattended_edge_service": false,
+  "full_desktop_product_spec_complete": false,
+  "web_mobile_implemented": false
+}

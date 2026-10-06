@@ -181,6 +181,290 @@
         }
       }
     },
+    "/api/v1/incidents": {
+      "get": {
+        "summary": "Incidents",
+        "operationId": "incidents_api_v1_incidents_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncidentSnapshot"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/incidents/history": {
+      "post": {
+        "summary": "Incident History",
+        "operationId": "incident_history_api_v1_incidents_history_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncidentQuery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncidentSnapshot"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/incidents/actions": {
+      "post": {
+        "summary": "Incident Action",
+        "operationId": "incident_action_api_v1_incidents_actions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncidentAction"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Incident"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/reports": {
       "get": {
         "summary": "Reports",
@@ -7326,6 +7610,252 @@
           "expires_at"
         ],
         "title": "IdentityStatus"
+      },
+      "Incident": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "org_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Org Id"
+          },
+          "facility_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Facility Id"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "mode": {
+            "type": "string",
+            "const": "SIMULATION",
+            "title": "Mode",
+            "default": "SIMULATION"
+          },
+          "sync_state": {
+            "type": "string",
+            "const": "LOCAL_ONLY",
+            "title": "Sync State",
+            "default": "LOCAL_ONLY"
+          },
+          "risk_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Risk Id"
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "source_state": {
+            "type": "string",
+            "enum": ["OPEN", "RESOLVED", "SUPERSEDED"],
+            "title": "Source State"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["OPEN", "ACKNOWLEDGED", "CLOSED"],
+            "title": "Status"
+          },
+          "opened_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Opened At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "prediction_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Prediction Id"
+          },
+          "threshold_kw": {
+            "type": "number",
+            "title": "Threshold Kw"
+          },
+          "predicted_peak_kw": {
+            "type": "number",
+            "title": "Predicted Peak Kw"
+          },
+          "actor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "org_id",
+          "facility_id",
+          "id",
+          "risk_id",
+          "revision",
+          "source_state",
+          "status",
+          "opened_at",
+          "updated_at",
+          "prediction_id",
+          "threshold_kw",
+          "predicted_peak_kw"
+        ],
+        "title": "Incident"
+      },
+      "IncidentAction": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "incident_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Incident Id"
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Revision"
+          },
+          "action": {
+            "type": "string",
+            "enum": ["acknowledge", "resolve"],
+            "title": "Action"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "incident_id",
+          "expected_revision",
+          "action",
+          "note"
+        ],
+        "title": "IncidentAction"
+      },
+      "IncidentQuery": {
+        "properties": {
+          "before": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e18,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Before"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "IncidentQuery"
+      },
+      "IncidentSnapshot": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "SIMULATION",
+            "title": "Mode",
+            "default": "SIMULATION"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "incidents": {
+            "items": {
+              "$ref": "#/components/schemas/Incident"
+            },
+            "type": "array",
+            "title": "Incidents"
+          },
+          "worker_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Error"
+          },
+          "processed_sequence": {
+            "type": "integer",
+            "title": "Processed Sequence"
+          },
+          "pending_events": {
+            "type": "integer",
+            "title": "Pending Events"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "next_before": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Before"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "observed_at",
+          "incidents",
+          "worker_error",
+          "processed_sequence",
+          "pending_events",
+          "total",
+          "next_before"
+        ],
+        "title": "IncidentSnapshot"
       },
       "IngestResult": {
         "properties": {

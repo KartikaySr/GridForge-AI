@@ -18,9 +18,11 @@ Official deployment references checked 6 October 2026:
 
 ## Desktop scope and acceptance
 
+User clarification: finish the **desktop prototype** before web/mobile. [Prototype release scope](DESKTOP_PROTOTYPE_SCOPE.md) defines the functional simulation boundary. The increments below retain the broader product roadmap; production-only capabilities are not prerequisites for a local simulation prototype.
+
 Completed reference: local simulation telemetry, registry, baseline forecasting, restricted curtailment proposals, human approval, simulated dispatch, measured synthetic finance, scoped local identity, audit and durable edge-to-cloud sync.
 
-Desktop increments (Phase 12A closes item 1 for local simulation; the rest remain pending):
+Desktop increments (Phase 12A closes item 1 for local simulation; Phase 12B delivers demand-risk incidents, the demand overview and native database ownership; other broader features remain pending):
 
 1. Production records and energy reports: immutable records with product/output/rejects, complete measured intervals, evidence digests, comparable-period SEC calculation, no quality/throughput-loss benefit claim, read/write permissions and native UI/export. Reports must distinguish local-only evidence from synced history.
 2. Operational workflows: persistent alerts with acknowledge/resolve semantics, reports/history/export, integration health and bounded worker/job inspection. Acknowledging an incident cannot authorize dispatch.

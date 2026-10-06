@@ -38,6 +38,57 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/incidents': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Incidents */
+    get: operations['incidents_api_v1_incidents_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/incidents/history': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Incident History */
+    post: operations['incident_history_api_v1_incidents_history_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/incidents/actions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Incident Action */
+    post: operations['incident_action_api_v1_incidents_actions_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/reports': {
     parameters: {
       query?: never;
@@ -2123,6 +2174,135 @@ export interface components {
        * @default SIMULATION
        */
       mode: string;
+    };
+    /** Incident */
+    Incident: {
+      /**
+       * Schema Version
+       * @default 1
+       * @constant
+       */
+      schema_version: '1';
+      /**
+       * Org Id
+       * Format: uuid
+       */
+      org_id: string;
+      /**
+       * Facility Id
+       * Format: uuid
+       */
+      facility_id: string;
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Mode
+       * @default SIMULATION
+       * @constant
+       */
+      mode: 'SIMULATION';
+      /**
+       * Sync State
+       * @default LOCAL_ONLY
+       * @constant
+       */
+      sync_state: 'LOCAL_ONLY';
+      /**
+       * Risk Id
+       * Format: uuid
+       */
+      risk_id: string;
+      /** Revision */
+      revision: number;
+      /**
+       * Source State
+       * @enum {string}
+       */
+      source_state: 'OPEN' | 'RESOLVED' | 'SUPERSEDED';
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: 'OPEN' | 'ACKNOWLEDGED' | 'CLOSED';
+      /**
+       * Opened At
+       * Format: date-time
+       */
+      opened_at: string;
+      /**
+       * Updated At
+       * Format: date-time
+       */
+      updated_at: string;
+      /**
+       * Prediction Id
+       * Format: uuid
+       */
+      prediction_id: string;
+      /** Threshold Kw */
+      threshold_kw: number;
+      /** Predicted Peak Kw */
+      predicted_peak_kw: number;
+      /** Actor */
+      actor?: string | null;
+      /** Note */
+      note?: string | null;
+    };
+    /** IncidentAction */
+    IncidentAction: {
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /**
+       * Incident Id
+       * Format: uuid
+       */
+      incident_id: string;
+      /** Expected Revision */
+      expected_revision: number;
+      /**
+       * Action
+       * @enum {string}
+       */
+      action: 'acknowledge' | 'resolve';
+      /** Note */
+      note: string;
+    };
+    /** IncidentQuery */
+    IncidentQuery: {
+      /** Before */
+      before?: number | null;
+    };
+    /** IncidentSnapshot */
+    IncidentSnapshot: {
+      /**
+       * Mode
+       * @default SIMULATION
+       * @constant
+       */
+      mode: 'SIMULATION';
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+      /** Incidents */
+      incidents: components['schemas']['Incident'][];
+      /** Worker Error */
+      worker_error: string | null;
+      /** Processed Sequence */
+      processed_sequence: number;
+      /** Pending Events */
+      pending_events: number;
+      /** Total */
+      total: number;
+      /** Next Before */
+      next_before: number | null;
     };
     /** IngestResult */
     IngestResult: {
@@ -4495,6 +4675,263 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['Diagnostics'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Request Entity Too Large */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Unprocessable Entity */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Too Many Requests */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+    };
+  };
+  incidents_api_v1_incidents_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IncidentSnapshot'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Request Entity Too Large */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Unprocessable Entity */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Too Many Requests */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+    };
+  };
+  incident_history_api_v1_incidents_history_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['IncidentQuery'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IncidentSnapshot'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Request Entity Too Large */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Unprocessable Entity */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Too Many Requests */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+    };
+  };
+  incident_action_api_v1_incidents_actions_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['IncidentAction'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Incident'];
         };
       };
       /** @description Unauthorized */

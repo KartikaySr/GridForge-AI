@@ -6,7 +6,7 @@ import os
 import secrets
 import time
 from collections.abc import AsyncIterator, Awaitable, Callable
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 from contextvars import ContextVar
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -32,6 +32,8 @@ from services.ai.contracts import (
     QueryRun,
 )
 from services.ai.service import AIRejected, AIService
+from services.alerting.contracts import Incident, IncidentAction, IncidentQuery, IncidentSnapshot
+from services.alerting.service import IncidentService
 from services.demonstration.contracts import DemoSnapshot, DemoStep
 from services.demonstration.service import DemoService
 from services.dispatch.contracts import (
@@ -140,9 +142,14 @@ def create_app(
             expires_at=datetime.now(UTC) + timedelta(hours=8),
         )
         await telemetry.start()
+        app.state.incidents = IncidentService(telemetry.repo)
+        incident_task = asyncio.create_task(app.state.incidents.run())
         try:
             yield
         finally:
+            incident_task.cancel()
+            with suppress(asyncio.CancelledError):
+                await incident_task
             app.state.demo.close()
             await telemetry.close()
 
@@ -357,6 +364,21 @@ def create_app(
             "dispatch.permission_denied", request_id=request.state.request_id, outcome="denied"
         )
         return failure(request, str(exc), 403)
+
+    @app.get("/api/v1/incidents", response_model=IncidentSnapshot, responses=errors)
+    def incidents() -> IncidentSnapshot:
+        service: IncidentService = app.state.incidents
+        return service.snapshot(request_principal.get())
+
+    @app.post("/api/v1/incidents/history", response_model=IncidentSnapshot, responses=errors)
+    def incident_history(query: IncidentQuery) -> IncidentSnapshot:
+        service: IncidentService = app.state.incidents
+        return service.snapshot(request_principal.get(), query.before)
+
+    @app.post("/api/v1/incidents/actions", response_model=Incident, responses=errors)
+    def incident_action(write: IncidentAction) -> Incident:
+        service: IncidentService = app.state.incidents
+        return service.act(write, request_principal.get())
 
     @app.get("/api/v1/reports", response_model=ReportingSnapshot, responses=errors)
     def reports() -> ReportingSnapshot:

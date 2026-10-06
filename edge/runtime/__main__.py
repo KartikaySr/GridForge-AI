@@ -12,6 +12,7 @@ import uvicorn
 from pydantic import BaseModel, ConfigDict, Field
 
 from edge.runtime.app import create_app
+from edge.runtime.ownership import database_owner
 
 
 class Bootstrap(BaseModel):
@@ -29,6 +30,11 @@ def main() -> int:
         print('{"event":"bootstrap.invalid"}', file=sys.stderr, flush=True)
         return 2
 
+    with database_owner(bootstrap.db_path):
+        return serve(bootstrap)
+
+
+def serve(bootstrap: Bootstrap) -> int:
     app = create_app(bootstrap.token, bootstrap.instance_id, bootstrap.db_path)
     listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     listener.bind(("127.0.0.1", 0))

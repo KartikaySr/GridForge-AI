@@ -80,7 +80,7 @@ def test_measured_sec_comparison_replay_restart_and_immutability(tmp_path: Path)
     repo.close()
     repo = Repository(path)
     assert ReportingService(repo).snapshot(user).reports[0] == b
-    assert repo.db.execute("PRAGMA user_version").fetchone()[0] == 10
+    assert repo.db.execute("PRAGMA user_version").fetchone()[0] == 11
     repo.close()
 
 

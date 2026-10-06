@@ -74,8 +74,8 @@ export function SystemHealth({
           <dt>Readiness scope</dt>
           <dd>
             {snapshot.health?.readiness_scope === 'telemetry'
-              ? 'Simulation telemetry · operational workflows unavailable'
-              : 'Shell API only · operational workflows unavailable'}
+              ? 'Simulation telemetry · inspect each workflow for readiness'
+              : 'Shell API only · no domain readiness inferred'}
           </dd>
         </dl>
       </section>

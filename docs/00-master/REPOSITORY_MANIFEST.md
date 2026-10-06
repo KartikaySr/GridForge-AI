@@ -312,3 +312,21 @@ Source/configuration files after Phase 9; tooling, dependencies, caches and buil
 - `docs/06-engineering/DEPLOYMENT_PREPARATION.md`
 - `docs/00-master/PHASE_12A_COMPLETION_REPORT.md`
 - `docs/evidence/phase-12a-acceptance.json`
+
+## Phase 12B additions
+
+- `services/alerting/__init__.py`
+- `services/alerting/contracts.py`
+- `services/alerting/service.py`
+- `edge/storage/migrations/0011_alerting.sql`
+- `edge/runtime/ownership.py`
+- `apps/desktop/src/pages/Incidents.tsx`
+- `apps/desktop/src/pages/Incidents.test.tsx`
+- `apps/desktop/src/components/DemandOverview.tsx`
+- `apps/desktop/src/components/DemandOverview.test.tsx`
+- `tests/unit/test_alerting.py`
+- `tests/unit/test_ownership.py`
+- `docs/00-master/DESKTOP_PROTOTYPE_SCOPE.md`
+- `docs/00-master/PHASE_12B_COMPLETION_REPORT.md`
+- `docs/06-engineering/INCIDENT_WORKFLOW.md`
+- `docs/evidence/phase-12b-acceptance.json`

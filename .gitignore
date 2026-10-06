@@ -36,3 +36,6 @@ docs/06-engineering/RESUME_PROJECT_FACTS.md
 
 # Keep competition submission materials local.
 docs/submission/
+
+# Native database ownership artifacts.
+*.owner.lock

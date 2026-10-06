@@ -91,3 +91,6 @@ FUTURE = intentionally deferred.
 - [Deployment preparation](../06-engineering/DEPLOYMENT_PREPARATION.md)
 - [Production reporting](../06-engineering/PRODUCTION_REPORTING.md)
 - [Phase 12A completion report](PHASE_12A_COMPLETION_REPORT.md)
+- [Desktop prototype release scope](DESKTOP_PROTOTYPE_SCOPE.md)
+- [Phase 12B completion report](PHASE_12B_COMPLETION_REPORT.md)
+- [Incident workflow](../06-engineering/INCIDENT_WORKFLOW.md)
