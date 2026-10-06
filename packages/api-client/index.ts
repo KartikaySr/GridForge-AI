@@ -57,3 +57,9 @@ export type OperationsSnapshot = components['schemas']['OperationsSnapshot'];
 
 export type DemoSnapshot = components['schemas']['DemoSnapshot'];
 export type DemoStep = components['schemas']['DemoStep'];
+export type ProductionWrite = components['schemas']['ProductionWrite-Input'];
+export type ProductionReport = components['schemas']['ProductionReport'];
+export type ReportComparisonRequest =
+  components['schemas']['ReportComparisonRequest'];
+export type ReportComparison = components['schemas']['ReportComparison'];
+export type ReportingSnapshot = components['schemas']['ReportingSnapshot'];

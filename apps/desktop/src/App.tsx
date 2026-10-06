@@ -1,3 +1,4 @@
+import { Reports } from './pages/Reports';
 import { IdentityGate } from './components/IdentityGate';
 import { Demonstration } from './pages/Demonstration';
 import { Security } from './pages/Security';
@@ -44,6 +45,7 @@ const groups = [
       ['Dispatch', 6],
       ['Verification & Savings', 7],
       ['AI Copilot', 9],
+      ['Production & Reports', 12],
     ],
   },
   {
@@ -126,7 +128,7 @@ export function App() {
                       }}
                     >
                       <span>{name}</span>
-                      {phase > 11 && <span className="phaseTag">P{phase}</span>}
+                      {phase > 12 && <span className="phaseTag">P{phase}</span>}
                       {page === name && <ChevronRight size={14} />}
                     </button>
                   ))}
@@ -170,7 +172,7 @@ export function App() {
                 <p>
                   {page === 'Command Center'
                     ? 'Local execution, connection state and platform readiness.'
-                    : 'GridForge facility-local control plane · Phase 11'}
+                    : 'GridForge facility-local control plane · Simulation'}
                 </p>
               </div>
               <StatusBadge state={state} />
@@ -222,6 +224,8 @@ export function App() {
             ) : page === 'Energy & Tariffs' ||
               page === 'Verification & Savings' ? (
               <Finance desktop={runtime.desktop} page={page} />
+            ) : page === 'Production & Reports' ? (
+              <Reports desktop={runtime.desktop} />
             ) : page === 'AI Copilot' ? (
               <Copilot desktop={runtime.desktop} />
             ) : page === 'Integrated Demonstration' ? (

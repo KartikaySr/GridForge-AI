@@ -138,7 +138,7 @@ def test_v7_migration_preserves_sync_conflicts_and_cursors(tmp_path: Path) -> No
     conn.commit()
     conn.close()
     repo = Repository(path)
-    assert repo.db.execute("PRAGMA user_version").fetchone()[0] == 9
+    assert repo.db.execute("PRAGMA user_version").fetchone()[0] == 10
     assert repo.db.execute("PRAGMA foreign_key_check").fetchall() == []
     assert (
         repo.db.execute(

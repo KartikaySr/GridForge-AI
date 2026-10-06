@@ -274,6 +274,7 @@ def test_phase3_upgrade_and_model_immutability(tmp_path: Path) -> None:
     seed(repo, ORIGIN - timedelta(minutes=5), 5)
     before = repo.history()
     repo.db.executescript(
+        "DROP TABLE production_reports; "
         "DROP TABLE sync_conflicts; DROP TABLE sync_streams; DROP TABLE edge_identity; "
         "DROP TABLE finance_outbox; DROP TABLE finance_ledger; "
         "DROP TABLE finance_verifications; DROP TABLE finance_tariffs; "
@@ -287,7 +288,7 @@ def test_phase3_upgrade_and_model_immutability(tmp_path: Path) -> None:
     )
     repo.close()
     repo = Repository(path)
-    assert repo.db.execute("PRAGMA user_version").fetchone()[0] == 9
+    assert repo.db.execute("PRAGMA user_version").fetchone()[0] == 10
     assert repo.facility_id == identity and repo.history() == before
     ForecastService(repo)
     with repo.db:

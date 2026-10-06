@@ -42,7 +42,7 @@ class Repository:
         self.db.execute("PRAGMA foreign_keys=ON")
         self.db.execute("PRAGMA busy_timeout=3000")
         version = self.db.execute("PRAGMA user_version").fetchone()[0]
-        if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9):
+        if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10):
             self.db.close()
             raise ValueError("Unsupported edge schema version")
         migrations = (
@@ -55,8 +55,9 @@ class Repository:
             "0007_sync.sql",
             "0008_ai.sql",
             "0009_hardening.sql",
+            "0010_reporting.sql",
         )
-        for next_version in range(version + 1, 10):
+        for next_version in range(version + 1, 11):
             sql = (Path(__file__).parent / "migrations" / migrations[next_version - 1]).read_text()
             self.db.executescript(
                 "BEGIN IMMEDIATE;\n" + sql + f"\nPRAGMA user_version={next_version};\nCOMMIT;"

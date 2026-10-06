@@ -20,7 +20,7 @@ def validate(path: Path) -> dict[str, Any]:
         if db.execute("PRAGMA foreign_key_check").fetchone():
             raise ValueError("BACKUP_FOREIGN_KEY_FAILURE")
         version = db.execute("PRAGMA user_version").fetchone()[0]
-        if version not in range(1, 10):
+        if version not in range(1, 11):
             raise ValueError("UNSUPPORTED_BACKUP_SCHEMA")
         head = "0" * 64
         if version >= 9:

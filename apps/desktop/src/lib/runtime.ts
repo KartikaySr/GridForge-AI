@@ -1,5 +1,10 @@
 import { invoke, isTauri } from '@tauri-apps/api/core';
 import type {
+  ProductionWrite,
+  ProductionReport,
+  ReportComparisonRequest,
+  ReportComparison,
+  ReportingSnapshot,
   IdentityStatus,
   LocalUser,
   UserWrite,
@@ -90,6 +95,27 @@ export const initialRuntime: RuntimeSnapshot = {
 };
 export const isDesktop = () => typeof window !== 'undefined' && isTauri();
 export const runtimeBridge = {
+  reports: (before: number | null = null) =>
+    withTimeout(
+      invoke<ReportingSnapshot>('security_request', {
+        operation: before ? 'report-history' : 'reports',
+        write: before ? { before } : null,
+      }),
+    ),
+  createReport: (write: ProductionWrite) =>
+    withTimeout(
+      invoke<ProductionReport>('security_request', {
+        operation: 'report-create',
+        write,
+      }),
+    ),
+  compareReports: (write: ReportComparisonRequest) =>
+    withTimeout(
+      invoke<ReportComparison>('security_request', {
+        operation: 'report-compare',
+        write,
+      }),
+    ),
   demo: () =>
     withTimeout(
       invoke<DemoSnapshot>('security_request', {

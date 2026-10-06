@@ -21,6 +21,7 @@ READ = frozenset(
         "tariff.read",
         "sync.read",
         "system.read",
+        "report.read",
     }
 )
 ALL = READ | frozenset(
@@ -35,6 +36,7 @@ ALL = READ | frozenset(
         "dispatch.approve",
         "dispatch.cancel",
         "finance.verify",
+        "report.create",
         "tariff.update",
         "ai.use",
         "ai.inspect",
@@ -58,6 +60,7 @@ ROLES: dict[str, frozenset[str]] = {
         "dispatch.approve",
         "dispatch.cancel",
         "finance.verify",
+        "report.create",
         "tariff.update",
         "ai.use",
         "ai.inspect",
@@ -90,6 +93,8 @@ def route_permission(method: str, path: str, kind: str | None = None) -> str | N
         "/api/v1/identity/logout",
     }:
         return None
+    if path.startswith("/api/v1/reports"):
+        return "report.create" if path.endswith("/production") else "report.read"
     if path.startswith("/api/v1/demo"):
         return "system.configure"
     if path.startswith("/api/v1/identity/users"):

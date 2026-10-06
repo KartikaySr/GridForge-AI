@@ -297,3 +297,18 @@ Source/configuration files after Phase 9; tooling, dependencies, caches and buil
 
 - `docs/assets/gridforge-banner.svg`
 - `docs/evidence/phase-11-acceptance.json`
+
+## Phase 12A additions
+
+- `services/reporting/__init__.py`
+- `services/reporting/contracts.py`
+- `services/reporting/service.py`
+- `edge/storage/migrations/0010_reporting.sql`
+- `apps/desktop/src/pages/Reports.tsx`
+- `apps/desktop/src/pages/Reports.test.tsx`
+- `tests/unit/test_reporting.py`
+- `docs/00-master/RELEASE_SCOPE.md`
+- `docs/06-engineering/PRODUCTION_REPORTING.md`
+- `docs/06-engineering/DEPLOYMENT_PREPARATION.md`
+- `docs/00-master/PHASE_12A_COMPLETION_REPORT.md`
+- `docs/evidence/phase-12a-acceptance.json`

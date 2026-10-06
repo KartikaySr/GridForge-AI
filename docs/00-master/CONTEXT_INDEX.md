@@ -84,3 +84,10 @@ FUTURE = intentionally deferred.
 - [Phase 11 demonstration guide](../06-engineering/PHASE_11_DEMONSTRATION.md)
 - [Corporate operating model](../08-future-clients/CORPORATE_OPERATING_MODEL.md)
 - [Phase 11 completion report](PHASE_11_COMPLETION_REPORT.md)
+
+## Desktop completion and multi-client release
+
+- [Release scope and deployment targets](RELEASE_SCOPE.md)
+- [Deployment preparation](../06-engineering/DEPLOYMENT_PREPARATION.md)
+- [Production reporting](../06-engineering/PRODUCTION_REPORTING.md)
+- [Phase 12A completion report](PHASE_12A_COMPLETION_REPORT.md)

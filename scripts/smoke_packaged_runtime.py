@@ -60,6 +60,8 @@ def smoke(executable: Path) -> None:
                 )
                 assert response.status_code == 200, response.text
                 assert client.get("/api/v1/registry").status_code == 200
+                reports = client.get("/api/v1/reports")
+                assert reports.status_code == 200 and reports.json()["reports"] == []
                 demo = client.get("/api/v1/demo").json()
                 assert demo["clock"] == "ACCELERATED_ISOLATED"
                 for action in ["normal", "bad", "peak", "propose", "approve", "verify", "explain"]:

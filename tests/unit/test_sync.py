@@ -28,12 +28,13 @@ def test_edge_identity_and_v6_upgrade_preserve_outboxes(tmp_path: Path) -> None:
     reopened = Repository(path)
     assert reopened.edge_id == edge_id
     reopened.db.executescript(
+        "DROP TABLE production_reports; "
         "DROP TABLE sync_conflicts; DROP TABLE sync_streams; DROP TABLE edge_identity; "
         "PRAGMA user_version=6;"
     )
     reopened.close()
     upgraded = Repository(path)
-    assert upgraded.db.execute("PRAGMA user_version").fetchone()[0] == 9
+    assert upgraded.db.execute("PRAGMA user_version").fetchone()[0] == 10
     assert (upgraded.org_id, upgraded.facility_id) == (org_id, facility_id)
     assert upgraded.db.execute("SELECT COUNT(*) FROM outbox").fetchone()[0] == count
     assert upgraded.db.execute("SELECT COUNT(*) FROM sync_streams").fetchone()[0] == 7

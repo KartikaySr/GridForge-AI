@@ -69,6 +69,15 @@ from services.registry.contracts import (
     RegistryWrite,
 )
 from services.registry.service import RegistryError
+from services.reporting.contracts import (
+    ProductionReport,
+    ProductionWrite,
+    ReportComparison,
+    ReportComparisonRequest,
+    ReportingQuery,
+    ReportingSnapshot,
+)
+from services.reporting.service import ReportingService
 from services.security.audit import AuditService
 from services.security.contracts import (
     AuditSnapshot,
@@ -116,6 +125,7 @@ def create_app(
         app.state.audit = AuditService(telemetry.repo)
         app.state.identity = IdentityService(telemetry.repo, app.state.audit, instance_id)
         app.state.operations = OperationsService(telemetry.repo, app.state.audit)
+        app.state.reporting = ReportingService(telemetry.repo)
         app.state.demo = DemoService()
         demo_url = os.environ.get("GRIDFORGE_DEMO_CLOUD_URL")
         demo_token = os.environ.get("GRIDFORGE_DEMO_EDGE_TOKEN")
@@ -347,6 +357,26 @@ def create_app(
             "dispatch.permission_denied", request_id=request.state.request_id, outcome="denied"
         )
         return failure(request, str(exc), 403)
+
+    @app.get("/api/v1/reports", response_model=ReportingSnapshot, responses=errors)
+    def reports() -> ReportingSnapshot:
+        service: ReportingService = app.state.reporting
+        return service.snapshot(request_principal.get())
+
+    @app.post("/api/v1/reports/history", response_model=ReportingSnapshot, responses=errors)
+    def report_history(query: ReportingQuery) -> ReportingSnapshot:
+        service: ReportingService = app.state.reporting
+        return service.snapshot(request_principal.get(), query.before)
+
+    @app.post("/api/v1/reports/production", response_model=ProductionReport, responses=errors)
+    def production_report(write: ProductionWrite) -> ProductionReport:
+        service: ReportingService = app.state.reporting
+        return service.create(write, request_principal.get(), datetime.now(UTC))
+
+    @app.post("/api/v1/reports/compare", response_model=ReportComparison, responses=errors)
+    def compare_reports(write: ReportComparisonRequest) -> ReportComparison:
+        service: ReportingService = app.state.reporting
+        return service.compare(write, request_principal.get())
 
     @app.get("/api/v1/demo", response_model=DemoSnapshot, responses=errors)
     def demo_read() -> DemoSnapshot:

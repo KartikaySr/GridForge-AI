@@ -553,6 +553,10 @@ impl Supervisor {
                 | "authorize"
                 | "demo"
                 | "demo-step"
+                | "reports"
+                | "report-create"
+                | "report-compare"
+                | "report-history"
         ) || write.as_ref().is_some_and(|v| v.to_string().len() > 65536)
         {
             return Err("Invalid security request".into());
@@ -905,6 +909,10 @@ fn run_worker(
                 }
                 let result = if let Some(child) = session.as_ref() {
                     let (route, post) = match operation.as_str() {
+                        "reports" => ("/api/v1/reports", false),
+                        "report-create" => ("/api/v1/reports/production", true),
+                        "report-compare" => ("/api/v1/reports/compare", true),
+                        "report-history" => ("/api/v1/reports/history", true),
                         "demo" => ("/api/v1/demo", false),
                         "demo-step" => ("/api/v1/demo", true),
                         "identity" => ("/api/v1/identity", false),
@@ -1200,6 +1208,13 @@ mod tests {
             .unwrap();
         assert_eq!(demo["risk"], "CLEAR");
         assert_eq!(demo["telemetry_rows"], 1505);
+        let reports = supervisor.security("reports".into(), None).unwrap();
+        assert_eq!(reports["mode"], "SIMULATION");
+        assert!(reports["reports"].as_array().unwrap().is_empty());
+        let history = supervisor
+            .security("report-history".into(), Some(json!({"before": 1})))
+            .unwrap();
+        assert!(history["reports"].as_array().unwrap().is_empty());
         let registry = supervisor.registry(None).unwrap();
         let dispatch = supervisor.dispatch("read".into(), None).unwrap();
         assert_eq!(dispatch["mode"], "SIMULATION");

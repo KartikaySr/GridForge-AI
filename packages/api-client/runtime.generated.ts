@@ -38,6 +38,74 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/reports': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Reports */
+    get: operations['reports_api_v1_reports_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/reports/history': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Report History */
+    post: operations['report_history_api_v1_reports_history_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/reports/production': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Production Report */
+    post: operations['production_report_api_v1_reports_production_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/reports/compare': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Compare Reports */
+    post: operations['compare_reports_api_v1_reports_compare_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/demo': {
     parameters: {
       query?: never;
@@ -2945,6 +3013,147 @@ export interface components {
        */
       kind: 'line';
     };
+    /** ProductionReport */
+    ProductionReport: {
+      /**
+       * Schema Version
+       * @default 1
+       * @constant
+       */
+      schema_version: '1';
+      /**
+       * Mode
+       * @default SIMULATION
+       * @constant
+       */
+      mode: 'SIMULATION';
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Org Id
+       * Format: uuid
+       */
+      org_id: string;
+      /**
+       * Facility Id
+       * Format: uuid
+       */
+      facility_id: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** Actor */
+      actor: string;
+      declaration: components['schemas']['ProductionWrite-Output'];
+      /**
+       * Method
+       * @default complete-second-electricity-sec-v1
+       * @constant
+       */
+      method: 'complete-second-electricity-sec-v1';
+      /**
+       * Production Source
+       * @default OPERATOR_DECLARED
+       * @constant
+       */
+      production_source: 'OPERATOR_DECLARED';
+      /**
+       * Sync State
+       * @default LOCAL_ONLY
+       * @constant
+       */
+      sync_state: 'LOCAL_ONLY';
+      /** Mapping Revisions */
+      mapping_revisions: {
+        [key: string]: string;
+      };
+      /** Expected Seconds */
+      expected_seconds: number;
+      /** Valid Seconds */
+      valid_seconds: number;
+      /** Source Digest */
+      source_digest: string;
+      /** First Row */
+      first_row: number | null;
+      /** Last Row */
+      last_row: number | null;
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: 'COMPLETE' | 'INCOMPLETE';
+      /** Reason */
+      reason: string | null;
+      /** Energy Kwh */
+      energy_kwh: string | null;
+      /** Sec Kwh Per Good Tonne */
+      sec_kwh_per_good_tonne: string | null;
+      /** Reject Fraction */
+      reject_fraction: string;
+      /** Good Tonnes Per Hour */
+      good_tonnes_per_hour: string;
+    };
+    /** ProductionWrite */
+    'ProductionWrite-Input': {
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /** Product */
+      product: string;
+      /**
+       * Starts At
+       * Format: date-time
+       */
+      starts_at: string;
+      /**
+       * Ends At
+       * Format: date-time
+       */
+      ends_at: string;
+      /** Asset Ids */
+      asset_ids: string[];
+      /** Good Tonnes */
+      good_tonnes: number | string;
+      /** Rejected Tonnes */
+      rejected_tonnes: number | string;
+      /** Note */
+      note: string;
+    };
+    /** ProductionWrite */
+    'ProductionWrite-Output': {
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /** Product */
+      product: string;
+      /**
+       * Starts At
+       * Format: date-time
+       */
+      starts_at: string;
+      /**
+       * Ends At
+       * Format: date-time
+       */
+      ends_at: string;
+      /** Asset Ids */
+      asset_ids: string[];
+      /** Good Tonnes */
+      good_tonnes: string;
+      /** Rejected Tonnes */
+      rejected_tonnes: string;
+      /** Note */
+      note: string;
+    };
     /** Proposal */
     Proposal: {
       /**
@@ -3089,6 +3298,72 @@ export interface components {
         | components['schemas']['Device']
         | components['schemas']['Metric-Input']
         | components['schemas']['SignalMapping'];
+    };
+    /** ReportComparison */
+    ReportComparison: {
+      /**
+       * Mode
+       * @default SIMULATION
+       * @constant
+       */
+      mode: 'SIMULATION';
+      /**
+       * Baseline Id
+       * Format: uuid
+       */
+      baseline_id: string;
+      /**
+       * Comparison Id
+       * Format: uuid
+       */
+      comparison_id: string;
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: 'COMPARABLE' | 'NOT_COMPARABLE' | 'PRODUCTION_REGRESSION';
+      /** Reasons */
+      reasons: string[];
+      /** Sec Change Percent */
+      sec_change_percent: string | null;
+      /**
+       * Interpretation
+       * @default Descriptive comparison of synthetic electricity and operator-declared output; not causal proof, industrial savings or independent quality verification.
+       */
+      interpretation: string;
+    };
+    /** ReportComparisonRequest */
+    ReportComparisonRequest: {
+      /**
+       * Baseline Id
+       * Format: uuid
+       */
+      baseline_id: string;
+      /**
+       * Comparison Id
+       * Format: uuid
+       */
+      comparison_id: string;
+    };
+    /** ReportingQuery */
+    ReportingQuery: {
+      /** Before */
+      before?: number | null;
+    };
+    /** ReportingSnapshot */
+    ReportingSnapshot: {
+      /**
+       * Mode
+       * @default SIMULATION
+       * @constant
+       */
+      mode: 'SIMULATION';
+      /** Reports */
+      reports: components['schemas']['ProductionReport'][];
+      /** Next Before */
+      next_before: number | null;
+      /** Sequences */
+      sequences: number[];
     };
     /** RiskRecord */
     RiskRecord: {
@@ -4220,6 +4495,350 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['Diagnostics'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Request Entity Too Large */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Unprocessable Entity */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Too Many Requests */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+    };
+  };
+  reports_api_v1_reports_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ReportingSnapshot'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Request Entity Too Large */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Unprocessable Entity */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Too Many Requests */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+    };
+  };
+  report_history_api_v1_reports_history_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ReportingQuery'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ReportingSnapshot'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Request Entity Too Large */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Unprocessable Entity */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Too Many Requests */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+    };
+  };
+  production_report_api_v1_reports_production_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ProductionWrite-Input'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ProductionReport'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Request Entity Too Large */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Unprocessable Entity */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Too Many Requests */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuntimeErrorResponse'];
+        };
+      };
+    };
+  };
+  compare_reports_api_v1_reports_compare_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ReportComparisonRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ReportComparison'];
         };
       };
       /** @description Unauthorized */

@@ -41,6 +41,7 @@ This is a working engineering prototype for plant operators and energy managers.
 - **Constrained proposals:** a deterministic continuous curtailment allocator with hard eligibility checks, bounded reductions and soft preference penalties.
 - **Human-authorized simulation:** separate approval, permission checks, repeated validation, durable command states, acknowledgement and measured verification.
 - **Financial attribution:** versioned synthetic tariffs, Decimal arithmetic, execution/rebound windows and distinct estimated versus verified simulated values.
+- **Production reporting:** immutable local simulation reports, declared good/rejected output, complete-window electricity intensity and comparisons that withhold improvement claims when production regresses.
 - **Durable synchronization:** seven versioned event streams, transactional outboxes, idempotent PostgreSQL receipt and visible backlog/conflict state.
 - **Inspectable explanations:** constraint reasons, cited source excerpts and restricted SELECT-only reporting queries.
 - **Desktop operations:** local accounts and roles, hash-chained audit, diagnostics, recovery tools and a packaged macOS application with an embedded Python runtime.
@@ -182,6 +183,8 @@ The [3 October 2026 local acceptance summary](docs/evidence/phase-11-acceptance.
 
 The reference scenario produces **1.84 USD of verified SIMULATED net energy value** using a declared **0.15 USD/kWh synthetic tariff** and complete 60-second execution and rebound windows. The baseline is the pre-dispatch rolling-mean projection. This is neither a real utility saving nor a demand-charge calculation. Small differences between separately rounded monetary components and the rounded net are expected.
 
+The [6 October reporting acceptance](docs/evidence/phase-12a-acceptance.json) records **227 passing tests** (182 Python, 42 frontend, 3 Rust), a rebuilt macOS package and clean-environment runtime smoke. See the [Phase 12A report](docs/00-master/PHASE_12A_COMPLETION_REPORT.md) for its local-only scope and remaining release gates.
+
 ### Failure behavior is part of the product
 
 - Bad, stale or insufficient input → unavailable prediction / UNKNOWN risk.
@@ -196,6 +199,10 @@ The reference scenario produces **1.84 USD of verified SIMULATED net energy valu
 Local identities use salted password hashing, scoped permissions, expiring sessions and revocation. Native transport credentials stay out of React. Restricted reporting queries cannot become an OT write path. Audit records use append-only protections and a hash chain; a privileged machine owner is outside that local tamper-evidence guarantee.
 
 Before an industrial deployment, the project needs site-specific commissioning, independent interlocks, credential lifecycle controls, unattended hosting, production distribution, external audit anchoring and operational validation. Existing dependency review findings are documented rather than suppressed. See [operations and release](docs/06-engineering/OPERATIONS_AND_RELEASE.md) and the [dependency review](docs/05-security/PHASE_10_DEPENDENCY_REVIEW.md).
+
+## Release scope and deployment preparation
+
+The [three-client release scope](docs/00-master/RELEASE_SCOPE.md) records desktop gaps and the shared cloud, web and mobile acceptance gates. Recommended targets are GitHub Releases for desktop installers, Vercel for web, Render for the API/PostgreSQL, and Expo EAS plus the app stores for mobile. No hosted resources have been provisioned. Phase 12A adds [local production reporting](docs/06-engineering/PRODUCTION_REPORTING.md); it does not complete the full desktop specification.
 
 ## One platform, three future operating contexts
 

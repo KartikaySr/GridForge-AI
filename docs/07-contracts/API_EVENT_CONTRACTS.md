@@ -252,3 +252,9 @@ GET `security/audit?after=N` returns at most 100 audit rows, integrity status an
 ## Phase 11 demonstration contracts
 
 GET `/api/v1/demo` returns the isolated accelerated DemoSnapshot. POST `/api/v1/demo` accepts a DemoStep containing a request UUID and ordered action. Both require `system.configure` in the host facility; approval additionally requires `dispatch.approve`. Responses explicitly label SIMULATION, ACCELERATED_ISOLATED and ephemeral scope, preserving separate demo IDs. Successful UUID retries return the original result; conflicting or out-of-order actions reject. The domain chain, event versions and seven sync streams are reused unchanged. No migration or cloud command API is introduced.
+
+## Phase 12A production reporting
+
+GET `/api/v1/reports` and POST `/api/v1/reports/history` return descending pages of 20 immutable local reports. History accepts an optional positive exclusive `before` sequence. POST `/api/v1/reports/production` takes a request UUID, product, closed whole-second UTC interval, selected assets, Decimal good/rejected tonnes and context. Requires `report.create`; read/history/compare require `report.read`. Scope and actor are server-owned. POST `/api/v1/reports/compare` takes baseline/comparison UUIDs and returns explicit comparability reasons with a nullable SEC percentage change.
+
+Native `security_request` allowlists reports, report-history, report-create and report-compare to fixed routes. Request replay is idempotent; changed payload reuse rejects. Reports use schema version 1, SIMULATION and LOCAL_ONLY literals. SQLite schema 10 adds immutable report storage; no central migration or sync-stream change. ProductionWrite input/output schemas differ because Decimal inputs accept JSON strings/numbers while outputs preserve decimal strings. See [reporting workflow and limitations](../06-engineering/PRODUCTION_REPORTING.md).
