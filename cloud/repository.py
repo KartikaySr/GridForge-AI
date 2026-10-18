@@ -101,11 +101,14 @@ class CloudRepository:
     @staticmethod
     def validate_entry(entry: SyncEntry, stream: Stream, org_id: UUID, facility_id: UUID) -> None:
         body = entry.body
+        if body.get("schema_version") == "2" and not isinstance(body.get("payload"), dict):
+            raise CloudRejected("EVENT_CONTRACT_OR_SCOPE_CONFLICT", stream, entry.sequence)
         if (
             str(body.get("event_id")) != str(entry.event_id)
             or body.get("org_id") != str(org_id)
             or body.get("facility_id") != str(facility_id)
-            or body.get("schema_version") != "1"
+            or body.get("schema_version")
+            not in (("1", "2") if stream in {"finance", "optimization"} else ("1",))
             or body.get("producer") != PRODUCERS[stream]
             or not isinstance(body.get("event_type"), str)
             or not isinstance(body.get("occurred_at"), str)
@@ -155,7 +158,7 @@ class CloudRepository:
                                 org_id,
                                 facility_id,
                                 entry.body["event_type"],
-                                "1",
+                                entry.body["schema_version"],
                                 entry.digest,
                                 Jsonb(entry.body),
                             ),

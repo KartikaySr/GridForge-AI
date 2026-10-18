@@ -43,11 +43,11 @@ See [acceptance and limitations](PHASE_12A_COMPLETION_REPORT.md). Domain service
 
 Central identity/session revocation, organization membership, facility authorization, RLS tests with two tenants; read projections over received events with observed/synced timestamps; rate limits and bounded queries; migrations, health endpoints, backup/restore rehearsal and deployment configuration. An edge credential is never a user credential. Current receiver endpoints alone are insufficient for enterprise clients.
 
-## Web release (pending)
+## Web simulation prototype (implemented locally; deployment pending)
 
-Portfolio/facility summaries, assets, received telemetry/history, risk/proposal/verification evidence, sync freshness and scoped audit. Read-only first. No browser-to-edge/database/OT calls. Acceptance: two-tenant isolation, expired/revoked sessions, offline/stale behavior, accessible flows and production build against the deployed API.
+Implemented: authorized facility portfolio, asset/configuration events, received telemetry/history, forecast/risk/proposal/verification evidence, receipt freshness and advisory audit. Read-only simulation. See [web verification and boundaries](../06-engineering/WEB_PROTOTYPE.md). No browser-to-edge/database/OT calls. Acceptance: two-tenant isolation, expired/revoked sessions, offline/stale behavior, accessible flows and production build against the deployed API.
 
-## Mobile release (pending)
+## Mobile release (pending explicit user permission)
 
 Android/iOS field companion with authentication, facility/asset summaries, alerts and idempotent offline text reports. Attachments follow bounded authenticated storage and retention. No offline dispatch approval. Acceptance: actual device builds, secure session storage, logout/revocation, network transition/retry tests, duplicate/conflict handling and store signing. Expo preview alone is not an installed-app release.
 

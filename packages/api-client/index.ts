@@ -66,3 +66,10 @@ export type ReportingSnapshot = components['schemas']['ReportingSnapshot'];
 export type Incident = components['schemas']['Incident'];
 export type IncidentAction = components['schemas']['IncidentAction'];
 export type IncidentSnapshot = components['schemas']['IncidentSnapshot'];
+
+import type { components as portalComponents } from './portal.generated';
+export type PortalIdentity = portalComponents['schemas']['PortalIdentity'];
+export type Portfolio = portalComponents['schemas']['Portfolio'];
+export type PortalHistory = portalComponents['schemas']['PortalHistory'];
+export type PortalEvent = portalComponents['schemas']['PortalEvent'];
+export type PortalFacility = portalComponents['schemas']['PortalFacility'];

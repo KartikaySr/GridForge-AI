@@ -3,6 +3,7 @@
   "private": true,
   "workspaces": [
     "apps/desktop",
+    "apps/web",
     "packages/*"
   ],
   "scripts": {
@@ -14,18 +15,21 @@
     "format": "prettier --write . && uv run ruff format . && uv run ruff check --fix .",
     "format:check": "prettier --check . && uv run ruff format --check .",
     "lint": "eslint . && uv run ruff check .",
-    "typecheck": "npm --workspace apps/desktop run typecheck && tsc -p packages/contracts/tsconfig.json && uv run mypy",
+    "typecheck": "npm --workspace apps/desktop run typecheck && npm --workspace apps/web run typecheck && tsc -p packages/contracts/tsconfig.json && uv run mypy",
     "test": "vitest run && uv run pytest",
-    "build": "npm --workspace apps/desktop run build",
+    "build": "npm --workspace apps/desktop run build && npm --workspace apps/web run build",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run contracts:check && npm test && npm run build",
     "desktop:native": "node scripts/native.mjs dev",
     "desktop:build": "node scripts/native.mjs build",
     "native:check": "node scripts/native.mjs check",
-    "contracts:generate": "uv run python -m scripts.generate_runtime_contracts && uv run python -m scripts.generate_cloud_contracts && npm --workspace packages/api-client run generate && prettier --write packages/api-client/runtime.openapi.json packages/api-client/runtime.generated.ts packages/api-client/cloud.openapi.json packages/api-client/cloud.generated.ts",
+    "contracts:generate": "uv run python -m scripts.generate_runtime_contracts && uv run python -m scripts.generate_cloud_contracts && uv run python -m scripts.generate_portal_contracts && npm --workspace packages/api-client run generate && prettier --write packages/api-client/runtime.openapi.json packages/api-client/runtime.generated.ts packages/api-client/cloud.openapi.json packages/api-client/cloud.generated.ts packages/api-client/portal.openapi.json packages/api-client/portal.generated.ts",
     "contracts:check": "npm --workspace packages/api-client run check",
     "desktop:package": "node scripts/native.mjs package",
     "security:scan": "npm audit --audit-level=low && uv run pip-audit && node scripts/native.mjs audit",
-    "demo:verify": "uv run python -m scripts.run_phase11 --approve-simulation"
+    "demo:verify": "uv run python -m scripts.run_phase11 --approve-simulation",
+    "web": "npm --workspace apps/web run dev",
+    "portal": "uv run python -m cloud.portal",
+    "portal:demo": "uv run python -m scripts.web_demo --approve-simulation"
   },
   "type": "module",
   "packageManager": "npm@10.9.8",

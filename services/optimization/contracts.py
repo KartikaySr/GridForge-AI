@@ -141,7 +141,8 @@ class OptimizationEvent(Contract):
         "OptimizationInfeasible",
         "OptimizationNoAction",
     ]
-    schema_version: Literal["1"] = "1"
+    schema_version: Literal["1", "2"] = "1"
+    payload: dict[str, object] | None = None
     occurred_at: datetime
     producer: Literal["edge.optimization"] = "edge.optimization"
     org_id: UUID

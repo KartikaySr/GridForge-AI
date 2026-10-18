@@ -8,7 +8,7 @@
     ".": "./index.ts"
   },
   "scripts": {
-    "generate": "openapi-typescript runtime.openapi.json -o runtime.generated.ts && openapi-typescript cloud.openapi.json -o cloud.generated.ts",
+    "generate": "openapi-typescript runtime.openapi.json -o runtime.generated.ts && openapi-typescript cloud.openapi.json -o cloud.generated.ts && openapi-typescript portal.openapi.json -o portal.generated.ts",
     "check": "node check.mjs"
   },
   "devDependencies": {

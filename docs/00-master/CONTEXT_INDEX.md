@@ -94,3 +94,7 @@ FUTURE = intentionally deferred.
 - [Desktop prototype release scope](DESKTOP_PROTOTYPE_SCOPE.md)
 - [Phase 12B completion report](PHASE_12B_COMPLETION_REPORT.md)
 - [Incident workflow](../06-engineering/INCIDENT_WORKFLOW.md)
+
+## Web simulation prototype
+
+- [Web modules, startup, boundaries and browser verification](../06-engineering/WEB_PROTOTYPE.md)

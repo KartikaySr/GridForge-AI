@@ -1,0 +1,520 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GridForge Web Portal",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health Api V1 Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/login": {
+      "post": {
+        "summary": "Login",
+        "operationId": "login_api_v1_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortalLogin"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortalIdentity"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/logout": {
+      "post": {
+        "summary": "Logout",
+        "operationId": "logout_api_v1_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "boolean"
+                  },
+                  "type": "object",
+                  "title": "Response Logout Api V1 Logout Post"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PortalSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me": {
+      "get": {
+        "summary": "Me",
+        "operationId": "me_api_v1_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortalIdentity"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PortalSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/portfolio": {
+      "get": {
+        "summary": "Portfolio",
+        "operationId": "portfolio_api_v1_portfolio_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PortalSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/facilities/{edge_id}/events": {
+      "get": {
+        "summary": "Events",
+        "operationId": "events_api_v1_facilities__edge_id__events_get",
+        "parameters": [
+          {
+            "name": "edge_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Edge Id"
+            }
+          },
+          {
+            "name": "stream",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "telemetry",
+                "registry",
+                "intelligence",
+                "optimization",
+                "dispatch",
+                "finance",
+                "ai"
+              ],
+              "type": "string",
+              "default": "telemetry",
+              "title": "Stream"
+            }
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 9223372036854775807,
+              "minimum": 1,
+              "default": 9223372036854775807,
+              "title": "Before"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortalHistory"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PortalSession": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "PortalEvent": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Event Id"
+          },
+          "sequence": {
+            "type": "integer",
+            "title": "Sequence"
+          },
+          "stream": {
+            "type": "string",
+            "enum": [
+              "telemetry",
+              "registry",
+              "intelligence",
+              "optimization",
+              "dispatch",
+              "finance",
+              "ai"
+            ],
+            "title": "Stream"
+          },
+          "event_type": {
+            "type": "string",
+            "title": "Event Type"
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Received At"
+          },
+          "body": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Body"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "event_id",
+          "sequence",
+          "stream",
+          "event_type",
+          "received_at",
+          "body"
+        ],
+        "title": "PortalEvent"
+      },
+      "PortalFacility": {
+        "properties": {
+          "edge_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Edge Id"
+          },
+          "org_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Org Id"
+          },
+          "facility_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Facility Id"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "last_received_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Received At"
+          },
+          "freshness": {
+            "type": "string",
+            "enum": ["RECENT_RECEIPT", "STALE", "NO_DATA"],
+            "title": "Freshness"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "edge_id",
+          "org_id",
+          "facility_id",
+          "enabled",
+          "last_received_at",
+          "freshness"
+        ],
+        "title": "PortalFacility"
+      },
+      "PortalHistory": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "SIMULATION",
+            "title": "Mode",
+            "default": "SIMULATION"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "edge_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Edge Id"
+          },
+          "stream": {
+            "type": "string",
+            "enum": [
+              "telemetry",
+              "registry",
+              "intelligence",
+              "optimization",
+              "dispatch",
+              "finance",
+              "ai"
+            ],
+            "title": "Stream"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/PortalEvent"
+            },
+            "type": "array",
+            "title": "Events"
+          },
+          "next_before": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Before"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "observed_at",
+          "edge_id",
+          "stream",
+          "events",
+          "next_before"
+        ],
+        "title": "PortalHistory"
+      },
+      "PortalIdentity": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "permission": {
+            "type": "string",
+            "const": "portfolio.read",
+            "title": "Permission",
+            "default": "portfolio.read"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id", "username", "expires_at"],
+        "title": "PortalIdentity"
+      },
+      "PortalLogin": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_.-]{3,64}$",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 12,
+            "title": "Password"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["username", "password"],
+        "title": "PortalLogin"
+      },
+      "Portfolio": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "SIMULATION",
+            "title": "Mode",
+            "default": "SIMULATION"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "facilities": {
+            "items": {
+              "$ref": "#/components/schemas/PortalFacility"
+            },
+            "type": "array",
+            "title": "Facilities"
+          },
+          "limit": {
+            "type": "integer",
+            "const": 100,
+            "title": "Limit",
+            "default": 100
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["observed_at", "facilities"],
+        "title": "Portfolio"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "PortalSession": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "gridforge_portal_session"
+      }
+    }
+  }
+}

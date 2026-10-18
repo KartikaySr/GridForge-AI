@@ -7363,9 +7363,21 @@
           },
           "schema_version": {
             "type": "string",
-            "const": "1",
+            "enum": ["1", "2"],
             "title": "Schema Version",
             "default": "1"
+          },
+          "payload": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payload"
           },
           "occurred_at": {
             "type": "string",
@@ -8698,9 +8710,21 @@
           },
           "schema_version": {
             "type": "string",
-            "const": "1",
+            "enum": ["1", "2"],
             "title": "Schema Version",
             "default": "1"
+          },
+          "payload": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payload"
           },
           "occurred_at": {
             "type": "string",

@@ -1,4 +1,5 @@
 import hashlib
+import json
 from datetime import UTC, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 from typing import TYPE_CHECKING
@@ -34,11 +35,38 @@ class OptimizationService:
         seq = self.repo.db.execute(
             "SELECT COALESCE(MAX(sequence),0)+1 FROM optimization_outbox"
         ).fetchone()[0]
+        table = (
+            "optimization_policies" if kind == "OptimizationPolicyCreated" else "optimization_runs"
+        )
+        row = self.repo.db.execute(
+            f"SELECT body FROM {table} WHERE id=?", (str(resource),)
+        ).fetchone()
+        if row is None and kind == "ProposalCreated":
+            row = self.repo.db.execute(
+                "SELECT body FROM optimization_runs WHERE json_extract(body, '$.proposal.id')=?",
+                (str(resource),),
+            ).fetchone()
+        source = json.loads(row[0]) if row else {}
+        fields = (
+            "id",
+            "name",
+            "status",
+            "algorithm_version",
+            "prediction_id",
+            "forecast_peak_kw",
+            "threshold_kw",
+            "required_reduction_kw",
+            "proposal",
+            "explanation",
+        )
+        payload = {key: source[key] for key in fields if key in source}
         event = OptimizationEvent.model_validate(
             dict(
                 sequence=seq,
                 event_id=uuid4(),
                 event_type=kind,
+                schema_version="2",
+                payload=payload,
                 occurred_at=now,
                 org_id=self.repo.org_id,
                 facility_id=self.repo.facility_id,

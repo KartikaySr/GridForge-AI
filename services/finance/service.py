@@ -1,4 +1,5 @@
 import hashlib
+import json
 from datetime import UTC, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 from typing import TYPE_CHECKING, Literal
@@ -56,10 +57,51 @@ class FinanceService:
         seq = self.repo.db.execute(
             "SELECT COALESCE(MAX(sequence),0)+1 FROM finance_outbox"
         ).fetchone()[0]
+        if kind.startswith("Savings"):
+            status = "VERIFIED" if kind == "SavingsVerified" else "ESTIMATED"
+            row = self.repo.db.execute(
+                "SELECT body FROM finance_ledger WHERE verification_id=? AND status=? "
+                "ORDER BY sequence DESC LIMIT 1",
+                (str(resource), status),
+            ).fetchone()
+        else:
+            table = "finance_tariffs" if kind == "TariffVersionCreated" else "finance_verifications"
+            row = self.repo.db.execute(
+                f"SELECT body FROM {table} WHERE id=?", (str(resource),)
+            ).fetchone()
+        source = json.loads(row[0]) if row else {}
+        fields = (
+            "id",
+            "name",
+            "status",
+            "currency",
+            "amount",
+            "method",
+            "verification_id",
+            "command_id",
+            "run_id",
+            "proposal_id",
+            "prediction_id",
+            "expected_reduction_kw",
+            "measured_reduction_kw",
+            "rebound_kwh",
+            "net_energy_kwh",
+            "gross_avoided_cost",
+            "rebound_cost",
+            "net_energy_value",
+            "execution",
+            "rebound",
+            "reason",
+        )
+        payload = {key: source[key] for key in fields if key in source}
+        if "tariff" in source:
+            payload["currency"] = source["tariff"]["currency"]
         envelope = FinanceEvent(
             sequence=seq,
             event_id=uuid4(),
             event_type=kind,
+            schema_version="2",
+            payload=payload,
             occurred_at=now,
             org_id=self.repo.org_id,
             facility_id=self.repo.facility_id,

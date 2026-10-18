@@ -35,6 +35,10 @@ def test_isolated_domain_chain_human_gate_and_actual_verification() -> None:
             assert demo.repo.state()[2]["accepted"] == rows
         assert result.command and result.command.state == "PENDING_APPROVAL"
         assert result.run and result.run.proposal
+        proposal_event = next(
+            e for e in demo.optimization.events() if e.event_type == "ProposalCreated"
+        )
+        assert proposal_event.payload and proposal_event.payload["proposal"]
         critical = next(c for c in result.run.candidates if c.asset_id == "SIM-5")
         assert not critical.eligible and critical.selected_kw == 0
         assert not demo.dispatch.adapter.reductions(demo.now)
@@ -57,6 +61,12 @@ def test_isolated_domain_chain_human_gate_and_actual_verification() -> None:
         assert result.verification.net_energy_value and result.verification.net_energy_value > 0
         assert result.explanation and result.explanation.evidence
         assert result.audit_integrity_ok
+        financial = demo.finance.events()
+        verified = next(event for event in financial if event.event_type == "SavingsVerified")
+        assert verified.schema_version == "2" and verified.payload
+        assert verified.payload["status"] == "VERIFIED"
+        assert verified.payload["currency"] == "USD"
+        assert verified.payload["amount"] is not None
         with pytest.raises(Rejected, match="NOT_CONFIGURED"):
             demo.step(DemoStep(request_id=uuid4(), action="disconnect"), principal)
         assert len(demo.steps) == 7

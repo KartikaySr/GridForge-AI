@@ -173,7 +173,8 @@ class FinanceEvent(Contract):
         "SavingsEstimated",
         "SavingsVerified",
     ]
-    schema_version: Literal["1"] = "1"
+    schema_version: Literal["1", "2"] = "1"
+    payload: dict[str, object] | None = None
     occurred_at: datetime
     producer: Literal["edge.finance"] = "edge.finance"
     org_id: UUID

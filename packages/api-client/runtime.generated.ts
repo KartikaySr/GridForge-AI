@@ -2059,9 +2059,13 @@ export interface components {
       /**
        * Schema Version
        * @default 1
-       * @constant
+       * @enum {string}
        */
-      schema_version: '1';
+      schema_version: '1' | '2';
+      /** Payload */
+      payload?: {
+        [key: string]: unknown;
+      } | null;
       /**
        * Occurred At
        * Format: date-time
@@ -2797,9 +2801,13 @@ export interface components {
       /**
        * Schema Version
        * @default 1
-       * @constant
+       * @enum {string}
        */
-      schema_version: '1';
+      schema_version: '1' | '2';
+      /** Payload */
+      payload?: {
+        [key: string]: unknown;
+      } | null;
       /**
        * Occurred At
        * Format: date-time

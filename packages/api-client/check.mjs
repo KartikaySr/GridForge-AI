@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import openapiTS, { astToString, COMMENT_HEADER } from 'openapi-typescript';
 import prettier from 'prettier';
 
-for (const name of ['runtime', 'cloud']) {
+for (const name of ['runtime', 'cloud', 'portal']) {
   const output = fileURLToPath(
     new URL(`./${name}.generated.ts`, import.meta.url),
   );
