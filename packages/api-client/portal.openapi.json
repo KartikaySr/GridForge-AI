@@ -213,10 +213,289 @@
           }
         ]
       }
+    },
+    "/api/v1/mobile/login": {
+      "post": {
+        "summary": "Login",
+        "operationId": "login_api_v1_mobile_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortalLogin"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MobileSession"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/mobile/me": {
+      "get": {
+        "summary": "Me",
+        "operationId": "me_api_v1_mobile_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortalIdentity"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "MobileSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/mobile/logout": {
+      "post": {
+        "summary": "Logout",
+        "operationId": "logout_api_v1_mobile_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "boolean"
+                  },
+                  "type": "object",
+                  "title": "Response Logout Api V1 Mobile Logout Post"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "MobileSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/mobile/portfolio": {
+      "get": {
+        "summary": "Portfolio",
+        "operationId": "portfolio_api_v1_mobile_portfolio_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "MobileSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/mobile/facilities/{edge_id}/events": {
+      "get": {
+        "summary": "Events",
+        "operationId": "events_api_v1_mobile_facilities__edge_id__events_get",
+        "parameters": [
+          {
+            "name": "edge_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Edge Id"
+            }
+          },
+          {
+            "name": "stream",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "telemetry",
+                "registry",
+                "intelligence",
+                "optimization",
+                "dispatch",
+                "finance",
+                "ai"
+              ],
+              "type": "string",
+              "default": "telemetry",
+              "title": "Stream"
+            }
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 9223372036854775807,
+              "minimum": 1,
+              "default": 9223372036854775807,
+              "title": "Before"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PortalHistory"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "MobileSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/mobile/reports": {
+      "post": {
+        "summary": "Report",
+        "operationId": "report_api_v1_mobile_reports_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FieldReportWrite"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldReportReceipt"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "MobileSession": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "FieldReportReceipt": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Received At"
+          },
+          "status": {
+            "type": "string",
+            "const": "accepted",
+            "title": "Status",
+            "default": "accepted"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["request_id", "received_at"],
+        "title": "FieldReportReceipt"
+      },
+      "FieldReportWrite": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "edge_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Edge Id"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["request_id", "edge_id", "text"],
+        "title": "FieldReportWrite"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -229,6 +508,21 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "MobileSession": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/PortalIdentity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["token", "identity"],
+        "title": "MobileSession"
       },
       "PortalEvent": {
         "properties": {
@@ -514,6 +808,10 @@
         "type": "apiKey",
         "in": "cookie",
         "name": "gridforge_portal_session"
+      },
+      "MobileSession": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }

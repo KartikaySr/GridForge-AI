@@ -1,0 +1,14 @@
+.local/
+.tooling/
+.venv/
+packaging/
+docs/submission/
+.env
+.env.*
+**/node_modules/
+**/target/
+**/dist/
+**/.expo/
+**/__pycache__/
+*.db
+*.sqlite*

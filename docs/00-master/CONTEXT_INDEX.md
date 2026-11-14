@@ -98,3 +98,9 @@ FUTURE = intentionally deferred.
 ## Web simulation prototype
 
 - [Web modules, startup, boundaries and browser verification](../06-engineering/WEB_PROTOTYPE.md)
+
+## Mobile simulation companion
+
+- [Mobile scope](../08-future-clients/MOBILE_PROTOTYPE_SCOPE.md)
+- [Mobile deployment and verification](../06-engineering/MOBILE_DEPLOYMENT.md)
+- [Vercel Services configuration](../06-engineering/VERCEL_DEPLOYMENT.md)

@@ -73,3 +73,8 @@ export type Portfolio = portalComponents['schemas']['Portfolio'];
 export type PortalHistory = portalComponents['schemas']['PortalHistory'];
 export type PortalEvent = portalComponents['schemas']['PortalEvent'];
 export type PortalFacility = portalComponents['schemas']['PortalFacility'];
+
+export type MobileSession = portalComponents['schemas']['MobileSession'];
+export type FieldReportWrite = portalComponents['schemas']['FieldReportWrite'];
+export type FieldReportReceipt =
+  portalComponents['schemas']['FieldReportReceipt'];

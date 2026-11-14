@@ -214,11 +214,11 @@ The [three-client release scope](docs/00-master/RELEASE_SCOPE.md) records deskto
 
 **Desktop / edge — implemented simulation:** plant-floor monitoring, constraints, local approval, simulated execution and local continuity.
 
-**Web — planned:** headquarters visibility across facilities, financial review and governance through shared cloud read APIs and enterprise identity.
+**Web — implemented simulation prototype:** seven read-only evidence modules, facility-scoped cookie sessions, history pagination and receipt freshness. [Web scope](docs/06-engineering/WEB_PROTOTYPE.md) and [Vercel configuration](docs/06-engineering/VERCEL_DEPLOYMENT.md) document hosted release requirements.
 
-**Mobile — planned:** field observations, alerts and asset context, followed by narrowly scoped actions only after remote authorization and edge revalidation exist.
+**Mobile — implemented simulation companion:** Expo/React Native facility, asset, risk and field-report screens, secure bearer sessions, cached facility context and an account-scoped SQLite report queue. The server validates membership and idempotent reports. [Mobile deployment](docs/06-engineering/MOBILE_DEPLOYMENT.md) tracks signed-device acceptance.
 
-These are clients of shared contracts, not separate implementations of the domain rules. Start the next stage with enterprise identity and cloud read projections, then web visibility and mobile field workflows. The [corporate operating model](docs/08-future-clients/CORPORATE_OPERATING_MODEL.md) describes responsibilities, day-to-day workflows and delivery prerequisites.
+These are clients of shared contracts, not separate implementations of the domain rules. Hosted configuration and installed-device verification are the next release gates. The [corporate operating model](docs/08-future-clients/CORPORATE_OPERATING_MODEL.md) describes responsibilities, day-to-day workflows and delivery prerequisites.
 
 ## Repository map
 
@@ -251,3 +251,7 @@ Specifications contain future requirements as well as implemented behavior. Use 
 This is an AI-assisted project developed through phased implementation and validation. Changes should follow [AGENTS.md](AGENTS.md): preserve the decision chain, keep domain logic outside the UI, version contracts, test meaningful failure cases and document unfinished work. Never represent synthetic telemetry or simulated financial outcomes as real industrial evidence.
 
 The desktop simulation is the reference implementation for the next stage of GridForge—not a claim that production commissioning or the complete VPP roadmap is finished.
+
+### Web and mobile development
+
+Run `npm run portal:demo` and `npm run web` for the local web simulation. The mobile client uses `npm run mobile` with `EXPO_PUBLIC_API_ORIGIN` set to a reachable HTTPS portal origin. Run `npm run mobile:export` to validate Android/iOS bundles. Both clients use shared generated contracts. Mobile reporting requires cloud migration 0007. Native signing and store accounts are configured by the project owner.

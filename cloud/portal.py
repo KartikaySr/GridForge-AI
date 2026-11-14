@@ -10,6 +10,7 @@ from fastapi import FastAPI, Query, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from cloud.mobile import mobile_router
 from cloud.repository import CloudRepository
 from services.portal.contracts import PortalHistory, PortalIdentity, PortalLogin, Portfolio
 from services.portal.service import PortalDenied, PortalService
@@ -45,15 +46,20 @@ def create_portal_app(
     async def guard(
         request: Request, call_next: Callable[[Request], Awaitable[Response]]
     ) -> Response:
-        if (request.headers.get("origin") and request.headers["origin"] != origin) or (
-            request.method == "POST" and request.headers.get("origin") != origin
+        native = request.url.path.startswith("/api/v1/mobile/")
+        if (native and request.headers.get("origin")) or (
+            not native
+            and (
+                (request.headers.get("origin") and request.headers["origin"] != origin)
+                or (request.method == "POST" and request.headers.get("origin") != origin)
+            )
         ):
             return JSONResponse(status_code=403, content={"code": "ORIGIN_DENIED"})
         if request.method == "POST":
             body = bytearray()
             async for chunk in request.stream():
                 body.extend(chunk)
-                if len(body) > 4096:
+                if len(body) > (16384 if native else 4096):
                     return JSONResponse(status_code=413, content={"code": "BODY_TOO_LARGE"})
             request._body = bytes(body)
         response = await call_next(request)
@@ -122,6 +128,7 @@ def create_portal_app(
             service.identity(request.cookies.get(COOKIE)), edge_id, stream, before
         )
 
+    app.include_router(mobile_router(dsn))
     return app
 
 

@@ -4,6 +4,7 @@
   "workspaces": [
     "apps/desktop",
     "apps/web",
+    "apps/mobile",
     "packages/*"
   ],
   "scripts": {
@@ -15,7 +16,7 @@
     "format": "prettier --write . && uv run ruff format . && uv run ruff check --fix .",
     "format:check": "prettier --check . && uv run ruff format --check .",
     "lint": "eslint . && uv run ruff check .",
-    "typecheck": "npm --workspace apps/desktop run typecheck && npm --workspace apps/web run typecheck && tsc -p packages/contracts/tsconfig.json && uv run mypy",
+    "typecheck": "npm --workspace apps/desktop run typecheck && npm --workspace apps/web run typecheck && npm --workspace apps/mobile run typecheck && tsc -p packages/contracts/tsconfig.json && uv run mypy",
     "test": "vitest run && uv run pytest",
     "build": "npm --workspace apps/desktop run build && npm --workspace apps/web run build",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run contracts:check && npm test && npm run build",
@@ -29,7 +30,9 @@
     "demo:verify": "uv run python -m scripts.run_phase11 --approve-simulation",
     "web": "npm --workspace apps/web run dev",
     "portal": "uv run python -m cloud.portal",
-    "portal:demo": "uv run python -m scripts.web_demo --approve-simulation"
+    "portal:demo": "uv run python -m scripts.web_demo --approve-simulation",
+    "mobile": "npm --workspace apps/mobile run start",
+    "mobile:export": "npm --workspace apps/mobile run export"
   },
   "type": "module",
   "packageManager": "npm@10.9.8",
@@ -41,13 +44,16 @@
     "@eslint/js": "10.0.1",
     "@types/node": "22.20.4",
     "axe-core": "^4.11.1",
-    "eslint": "10.11.0",
+    "eslint": "^10.15.0",
     "eslint-plugin-react-hooks": "7.1.1",
     "globals": "17.12.0",
-    "happy-dom": "20.14.5",
+    "happy-dom": "^21.0.4",
     "prettier": "3.9.8",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.70.1",
-    "vitest": "5.0.1"
+    "typescript-eslint": "^8.72.2",
+    "vitest": "^5.1.0"
+  },
+  "overrides": {
+    "minimatch@>=7 <11": "11.0.8"
   }
 }

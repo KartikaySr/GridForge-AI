@@ -3,6 +3,7 @@ import hmac
 import secrets
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from typing import Literal
 from uuid import UUID, uuid4
 
 import psycopg
@@ -24,14 +25,14 @@ class PortalDenied(ValueError):
 
 
 class PortalService:
-    def __init__(self, dsn: str) -> None:
+    def __init__(self, dsn: str, client: Literal["web", "mobile"] = "web") -> None:
         self.dsn = dsn
+        self.client = client
 
     def migrate(self) -> None:
         with psycopg.connect(self.dsn) as conn:
-            conn.execute(
-                (Path(__file__).parents[2] / "database/migrations/0006_portal.sql").read_text()
-            )
+            for name in ("0006_portal.sql", "0007_mobile.sql"):
+                conn.execute((Path(__file__).parents[2] / "database/migrations" / name).read_text())
 
     def provision(self, login: PortalLogin, org_id: UUID, facility_id: UUID) -> UUID:
         """Local administrative provisioning; no browser-accessible registration endpoint."""
@@ -74,11 +75,13 @@ class PortalService:
         expiry = datetime.now(UTC) + timedelta(hours=1)
         with psycopg.connect(self.dsn) as conn:
             conn.execute(
-                "DELETE FROM portal_sessions WHERE user_id=%s OR expires_at<=now()", (row[0],)
+                "DELETE FROM portal_sessions WHERE (user_id=%s AND client=%s) OR expires_at<=now()",
+                (row[0], self.client),
             )
             conn.execute(
-                "INSERT INTO portal_sessions VALUES(%s,%s,%s)",
-                (hashlib.sha256(token.encode()).hexdigest(), row[0], expiry),
+                "INSERT INTO portal_sessions(token_hash,user_id,expires_at,client) "
+                "VALUES(%s,%s,%s,%s)",
+                (hashlib.sha256(token.encode()).hexdigest(), row[0], expiry, self.client),
             )
         return token, PortalIdentity(id=row[0], username=row[1], expires_at=expiry)
 
@@ -89,8 +92,8 @@ class PortalService:
             row = conn.execute(
                 "SELECT u.id,u.username,s.expires_at FROM portal_sessions s "
                 "JOIN portal_users u ON u.id=s.user_id WHERE s.token_hash=%s "
-                "AND s.expires_at>now() AND u.enabled",
-                (hashlib.sha256(token.encode()).hexdigest(),),
+                "AND s.expires_at>now() AND u.enabled AND s.client=%s",
+                (hashlib.sha256(token.encode()).hexdigest(), self.client),
             ).fetchone()
         if not row:
             raise PortalDenied("AUTH_REQUIRED")
@@ -99,8 +102,8 @@ class PortalService:
     def logout(self, token: str | None) -> None:
         with psycopg.connect(self.dsn) as conn:
             conn.execute(
-                "DELETE FROM portal_sessions WHERE token_hash=%s",
-                (hashlib.sha256((token or "").encode()).hexdigest(),),
+                "DELETE FROM portal_sessions WHERE token_hash=%s AND client=%s",
+                (hashlib.sha256((token or "").encode()).hexdigest(), self.client),
             )
 
     @staticmethod

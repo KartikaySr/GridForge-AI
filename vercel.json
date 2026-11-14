@@ -1,0 +1,22 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "web": {
+      "root": ".",
+      "framework": "vite",
+      "installCommand": "npm ci",
+      "buildCommand": "npm --workspace apps/web run build",
+      "outputDirectory": "apps/web/dist",
+      "devCommand": "npm run web"
+    },
+    "portal": {
+      "root": ".",
+      "framework": "fastapi",
+      "entrypoint": "cloud.vercel_portal:app"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": { "service": "portal" } },
+    { "source": "/(.*)", "destination": { "service": "web" } }
+  ]
+}

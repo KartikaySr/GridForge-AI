@@ -86,6 +86,12 @@ export function App() {
     };
   }, []);
   useEffect(() => {
+    if (user && Date.parse(user.expires_at) <= clock) {
+      clear();
+      setNotice('Your session ended. Sign in again.');
+    }
+  }, [user, clock, clear]);
+  useEffect(() => {
     if (!user) return;
     let active = true;
     void api
@@ -104,10 +110,10 @@ export function App() {
     };
   }, [user, failure]);
   useEffect(() => {
-    if (!user || !edge) return;
-    let active = true;
     const key = ++generation.current;
     setHistory(null);
+    if (!user || !edge) return;
+    let active = true;
     void api
       .history(edge, stream)
       .then((h) => {

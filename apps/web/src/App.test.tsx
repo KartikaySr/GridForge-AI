@@ -49,3 +49,68 @@ it('shows an explicit empty authorized portfolio without invented facility data'
   expect(host.textContent).toContain('READ ONLY');
   await act(async () => root.unmount());
 });
+it('clears protected views when the session has expired', async () => {
+  vi.mocked(api.me).mockResolvedValue({
+    id: 'user',
+    username: 'reader',
+    permission: 'portfolio.read',
+    expires_at: new Date(Date.now() - 1000).toISOString(),
+  });
+  const host = document.createElement('div'),
+    root = createRoot(host);
+  await act(async () => root.render(<App />));
+  expect(host.querySelector('input[type="password"]')).not.toBeNull();
+  expect(host.textContent).toContain('Your session ended');
+  await act(async () => root.unmount());
+});
+it('removes old evidence when the facility selection is cleared', async () => {
+  vi.mocked(api.me).mockResolvedValue({
+    id: 'user',
+    username: 'reader',
+    permission: 'portfolio.read',
+    expires_at: new Date(Date.now() + 3600000).toISOString(),
+  });
+  vi.mocked(api.portfolio).mockResolvedValue({
+    mode: 'SIMULATION',
+    observed_at: new Date().toISOString(),
+    limit: 100,
+    facilities: [
+      {
+        edge_id: 'edge',
+        org_id: 'org',
+        facility_id: 'facility',
+        enabled: true,
+        last_received_at: null,
+        freshness: 'NO_DATA',
+      },
+    ],
+  });
+  vi.mocked(api.history).mockResolvedValue({
+    mode: 'SIMULATION',
+    observed_at: new Date().toISOString(),
+    edge_id: 'edge',
+    stream: 'telemetry',
+    next_before: null,
+    events: [
+      {
+        event_id: 'event',
+        sequence: 1,
+        stream: 'telemetry',
+        event_type: 'VisibleTelemetry',
+        received_at: new Date().toISOString(),
+        body: {},
+      },
+    ],
+  });
+  const host = document.createElement('div'),
+    root = createRoot(host);
+  await act(async () => root.render(<App />));
+  expect(host.textContent).toContain('VisibleTelemetry');
+  await act(async () => {
+    const select = host.querySelector('select')!;
+    select.value = '';
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  expect(host.textContent).not.toContain('VisibleTelemetry');
+  await act(async () => root.unmount());
+});

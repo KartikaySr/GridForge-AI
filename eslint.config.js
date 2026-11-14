@@ -19,7 +19,11 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   { languageOptions: { globals: globals.node } },
   {
-    files: ['apps/desktop/src/**/*.{ts,tsx}', 'apps/web/src/**/*.{ts,tsx}'],
+    files: [
+      'apps/desktop/src/**/*.{ts,tsx}',
+      'apps/web/src/**/*.{ts,tsx}',
+      'apps/mobile/src/**/*.{ts,tsx}',
+    ],
     languageOptions: { globals: globals.browser },
     plugins: { 'react-hooks': hooks },
     rules: {

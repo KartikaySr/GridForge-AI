@@ -25,6 +25,9 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y postgresql
       - run: echo "$(pg_config --bindir)" >> "$GITHUB_PATH"
       - run: npm run check
+      - run: npm run mobile:export
+        env:
+          EXPO_NO_TELEMETRY: 1
       - run: npm audit --audit-level=low
       - run: uv run pip-audit
       - run: uv run python -m scripts.telemetry_load --batches 2000

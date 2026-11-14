@@ -106,14 +106,156 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/mobile/login': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Login */
+    post: operations['login_api_v1_mobile_login_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/mobile/me': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Me */
+    get: operations['me_api_v1_mobile_me_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/mobile/logout': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Logout */
+    post: operations['logout_api_v1_mobile_logout_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/mobile/portfolio': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Portfolio */
+    get: operations['portfolio_api_v1_mobile_portfolio_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/mobile/facilities/{edge_id}/events': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Events */
+    get: operations['events_api_v1_mobile_facilities__edge_id__events_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/mobile/reports': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Report */
+    post: operations['report_api_v1_mobile_reports_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** FieldReportReceipt */
+    FieldReportReceipt: {
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /**
+       * Received At
+       * Format: date-time
+       */
+      received_at: string;
+      /**
+       * Status
+       * @default accepted
+       * @constant
+       */
+      status: 'accepted';
+    };
+    /** FieldReportWrite */
+    FieldReportWrite: {
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /**
+       * Edge Id
+       * Format: uuid
+       */
+      edge_id: string;
+      /** Text */
+      text: string;
+    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
       detail?: components['schemas']['ValidationError'][];
+    };
+    /** MobileSession */
+    MobileSession: {
+      /** Token */
+      token: string;
+      identity: components['schemas']['PortalIdentity'];
     };
     /** PortalEvent */
     PortalEvent: {
@@ -427,6 +569,175 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['PortalHistory'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  login_api_v1_mobile_login_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PortalLogin'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['MobileSession'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  me_api_v1_mobile_me_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PortalIdentity'];
+        };
+      };
+    };
+  };
+  logout_api_v1_mobile_logout_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            [key: string]: boolean;
+          };
+        };
+      };
+    };
+  };
+  portfolio_api_v1_mobile_portfolio_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Portfolio'];
+        };
+      };
+    };
+  };
+  events_api_v1_mobile_facilities__edge_id__events_get: {
+    parameters: {
+      query?: {
+        stream?:
+          | 'telemetry'
+          | 'registry'
+          | 'intelligence'
+          | 'optimization'
+          | 'dispatch'
+          | 'finance'
+          | 'ai';
+        before?: number;
+      };
+      header?: never;
+      path: {
+        edge_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PortalHistory'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  report_api_v1_mobile_reports_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['FieldReportWrite'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['FieldReportReceipt'];
         };
       };
       /** @description Validation Error */

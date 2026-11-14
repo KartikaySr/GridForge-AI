@@ -1,6 +1,6 @@
 # Web simulation prototype
 
-The browser is a read-only enterprise client. It uses a separate cookie session and facility membership; edge transport credentials never serve as browser credentials. PostgreSQL row-level security restricts reads. Desktop remains the simulated operational control plane. Mobile requires separate user approval.
+The browser is a read-only enterprise client. It uses a separate cookie session and facility membership; edge transport credentials never serve as browser credentials. PostgreSQL row-level security restricts reads. Desktop remains the simulated operational control plane. Mobile development is authorized and uses separate bearer sessions.
 
 ## Local startup
 
@@ -26,4 +26,4 @@ No browser dispatch or approvals. Local incident workflow and production reports
 
 Confirmed on the local synthetic PostgreSQL demo: corrected ProposalCreated evidence displays reduction, threshold and forecast values; logout returns to sign-in; Tab moves username focus to password and Enter submits sign-in. The 390 × 844 viewport reports no horizontal document overflow. All seven modules were exercised in the earlier browser pass, including financial estimated/verified amounts and stale receipt labeling. The proposal lookup defect found there is now corrected and covered by the demonstration regression test.
 
-The web remains a read-only simulation evidence workspace. Authentication expiry/revocation and tenant isolation have backend integration coverage; exhaustive multi-browser and real-device certification are not claimed. Hosted deployment is separate. Mobile development is not authorized yet.
+The web remains a read-only simulation evidence workspace. Authentication expiry/revocation and tenant isolation have backend integration coverage; exhaustive multi-browser and real-device certification are not claimed. Hosted deployment is separate. Mobile implementation and device acceptance are tracked in MOBILE_DEPLOYMENT.md.

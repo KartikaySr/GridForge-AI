@@ -52,3 +52,20 @@ class PortalHistory(Contract):
     stream: Stream
     events: list[PortalEvent]
     next_before: int | None
+
+
+class MobileSession(Contract):
+    token: str
+    identity: PortalIdentity
+
+
+class FieldReportWrite(Contract):
+    request_id: UUID
+    edge_id: UUID
+    text: str = Field(min_length=1, max_length=2000, pattern=r"\S")
+
+
+class FieldReportReceipt(Contract):
+    request_id: UUID
+    received_at: datetime
+    status: Literal["accepted"] = "accepted"

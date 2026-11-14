@@ -39,7 +39,7 @@ Acceptance: domain/API tests, negative authorization and stale-input tests, gene
 
 See [acceptance and limitations](PHASE_12A_COMPLETION_REPORT.md). Domain service, native desktop page and versioned API for manually recorded simulation production intervals, immutable quality-gated electricity reports and like-for-like comparisons. Migration 10, generated API contracts and permission catalog affected. No physical control or changes to dispatch authority. No automatic report-to-savings-ledger conversion. Production records are operator declarations, not sensor proof of product quality. Bounded report windows keep processing predictable. Integration with the central reporting model is a later explicit contract increment.
 
-## Shared cloud foundation (pending)
+## Shared cloud foundation (prototype implemented; hosted verification pending)
 
 Central identity/session revocation, organization membership, facility authorization, RLS tests with two tenants; read projections over received events with observed/synced timestamps; rate limits and bounded queries; migrations, health endpoints, backup/restore rehearsal and deployment configuration. An edge credential is never a user credential. Current receiver endpoints alone are insufficient for enterprise clients.
 
@@ -47,7 +47,7 @@ Central identity/session revocation, organization membership, facility authoriza
 
 Implemented: authorized facility portfolio, asset/configuration events, received telemetry/history, forecast/risk/proposal/verification evidence, receipt freshness and advisory audit. Read-only simulation. See [web verification and boundaries](../06-engineering/WEB_PROTOTYPE.md). No browser-to-edge/database/OT calls. Acceptance: two-tenant isolation, expired/revoked sessions, offline/stale behavior, accessible flows and production build against the deployed API.
 
-## Mobile release (pending explicit user permission)
+## Mobile release (authorized; device acceptance pending)
 
 Android/iOS field companion with authentication, facility/asset summaries, alerts and idempotent offline text reports. Attachments follow bounded authenticated storage and retention. No offline dispatch approval. Acceptance: actual device builds, secure session storage, logout/revocation, network transition/retry tests, duplicate/conflict handling and store signing. Expo preview alone is not an installed-app release.
 
