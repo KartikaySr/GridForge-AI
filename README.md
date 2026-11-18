@@ -255,3 +255,5 @@ The desktop simulation is the reference implementation for the next stage of Gri
 ### Web and mobile development
 
 Run `npm run portal:demo` and `npm run web` for the local web simulation. The mobile client uses `npm run mobile` with `EXPO_PUBLIC_API_ORIGIN` set to a reachable HTTPS portal origin. Run `npm run mobile:export` to validate Android/iOS bundles. Both clients use shared generated contracts. Mobile reporting requires cloud migration 0007. Native signing and store accounts are configured by the project owner.
+
+For a shared desktop/web/mobile factory with preloaded evidence and continuing telemetry, run `npm run demo:triangle`. Follow the [triangle demonstration guide](docs/06-engineering/TRIANGLE_DEMO.md) for phone connectivity, field-report round trips and hosted simulation setup.

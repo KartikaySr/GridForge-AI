@@ -107,9 +107,16 @@ impl LaunchConfig {
         } else {
             ".venv/bin/python"
         };
+        let db_path = match std::env::var("GRIDFORGE_DEMO_ID") {
+            Ok(value) => {
+                let id = Uuid::parse_str(&value).map_err(|_| "Invalid simulation demo ID")?;
+                root.join(format!(".local/triangle-{id}/edge.db"))
+            }
+            Err(_) => root.join(".local/edge.db"),
+        };
         Ok(Self {
             python: root.join(executable),
-            db_path: root.join(".local/edge.db"),
+            db_path,
             root,
             packaged: false,
         })

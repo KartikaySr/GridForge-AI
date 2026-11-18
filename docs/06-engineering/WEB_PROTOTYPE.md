@@ -27,3 +27,7 @@ No browser dispatch or approvals. Local incident workflow and production reports
 Confirmed on the local synthetic PostgreSQL demo: corrected ProposalCreated evidence displays reduction, threshold and forecast values; logout returns to sign-in; Tab moves username focus to password and Enter submits sign-in. The 390 × 844 viewport reports no horizontal document overflow. All seven modules were exercised in the earlier browser pass, including financial estimated/verified amounts and stale receipt labeling. The proposal lookup defect found there is now corrected and covered by the demonstration regression test.
 
 The web remains a read-only simulation evidence workspace. Authentication expiry/revocation and tenant isolation have backend integration coverage; exhaustive multi-browser and real-device certification are not claimed. Hosted deployment is separate. Mobile implementation and device acceptance are tracked in MOBILE_DEPLOYMENT.md.
+
+## Shared demonstration updates
+
+The Field reports view reads the signed-in user's synchronized mobile observations for the selected facility. Optional five-second auto-refresh updates the newest received records while the page is visible. Selecting older records disables auto-refresh. Use [the triangle launcher](TRIANGLE_DEMO.md) for one preloaded factory shared with the native desktop and mobile APIs.

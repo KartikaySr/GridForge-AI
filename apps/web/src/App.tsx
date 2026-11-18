@@ -1,3 +1,4 @@
+import { FieldReports } from './components/FieldReports';
 import { Evidence } from './components/Evidence';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -25,6 +26,7 @@ const streams = [
   ['dispatch', 'Dispatch history'],
   ['finance', 'Verification & savings'],
   ['ai', 'Advisory audit'],
+  ['reports', 'Field reports'],
 ] as const;
 function scalar(value: unknown): string {
   return ['string', 'number', 'boolean'].includes(typeof value)
@@ -42,6 +44,8 @@ export function App() {
     [notice, setNotice] = useState(''),
     [clock, setClock] = useState(Date.now);
   const generation = useRef(0);
+  const [reportRevision, setReportRevision] = useState(0);
+  const [live, setLive] = useState(false);
   const clear = useCallback(() => {
     generation.current++;
     setUser(null);
@@ -112,7 +116,7 @@ export function App() {
   useEffect(() => {
     const key = ++generation.current;
     setHistory(null);
-    if (!user || !edge) return;
+    if (!user || !edge || stream === 'reports') return;
     let active = true;
     void api
       .history(edge, stream)
@@ -132,10 +136,14 @@ export function App() {
     setNotice('');
     try {
       const p = await api.portfolio();
-      const h = edge ? await api.history(edge, stream, before) : null;
+      const h =
+        edge && stream !== 'reports'
+          ? await api.history(edge, stream, before)
+          : null;
       if (generation.current === key) {
         setPortfolio(p);
         setHistory(h);
+        setReportRevision((value) => value + 1);
         if (!edge) setEdge(p.facilities[0]?.edge_id ?? '');
       }
     } catch (e) {
@@ -144,6 +152,15 @@ export function App() {
       setBusy(false);
     }
   }
+  useEffect(() => {
+    if (!live || !user) return;
+    const timer = setInterval(() => {
+      if (!busy && document.visibilityState === 'visible') void refresh();
+    }, 5000);
+    return () => clearInterval(timer);
+    // Refresh closes over the current selection; restart when it changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [live, user, edge, stream, busy]);
   const selected = portfolio?.facilities.find((f) => f.edge_id === edge);
   const receiptAge = selected?.last_received_at
     ? clock - Date.parse(selected.last_received_at)
@@ -327,6 +344,14 @@ export function App() {
               <RefreshCw size={16} /> Refresh newest
             </button>
           </div>
+          <label>
+            <input
+              type="checkbox"
+              checked={live}
+              onChange={(event) => setLive(event.target.checked)}
+            />{' '}
+            Auto-refresh every 5 seconds (newest records)
+          </label>
           <div className="summaryGrid">
             <article>
               <Building2 />
@@ -393,7 +418,14 @@ export function App() {
                 </p>
               </div>
             )}
-            {edge && !history && !notice && (
+            {stream === 'reports' && (
+              <FieldReports
+                edge={edge}
+                revision={reportRevision}
+                onError={failure}
+              />
+            )}
+            {stream !== 'reports' && edge && !history && !notice && (
               <p className="empty" role="status">
                 Loading received history…
               </p>
@@ -431,7 +463,10 @@ export function App() {
               <button
                 className="secondary"
                 disabled={busy}
-                onClick={() => void refresh(history.next_before)}
+                onClick={() => {
+                  setLive(false);
+                  void refresh(history.next_before);
+                }}
               >
                 Older records
               </button>

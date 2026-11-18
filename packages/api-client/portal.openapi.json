@@ -214,6 +214,51 @@
         ]
       }
     },
+    "/api/v1/facilities/{edge_id}/reports": {
+      "get": {
+        "summary": "Reports",
+        "operationId": "reports_api_v1_facilities__edge_id__reports_get",
+        "parameters": [
+          {
+            "name": "edge_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Edge Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldReportHistory"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PortalSession": []
+          }
+        ]
+      }
+    },
     "/api/v1/mobile/login": {
       "post": {
         "summary": "Login",
@@ -443,10 +488,87 @@
           }
         ]
       }
+    },
+    "/api/v1/mobile/facilities/{edge_id}/reports": {
+      "get": {
+        "summary": "Reports",
+        "operationId": "reports_api_v1_mobile_facilities__edge_id__reports_get",
+        "parameters": [
+          {
+            "name": "edge_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Edge Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldReportHistory"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "MobileSession": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "FieldReportHistory": {
+        "properties": {
+          "edge_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Edge Id"
+          },
+          "mode": {
+            "type": "string",
+            "const": "SIMULATION",
+            "title": "Mode",
+            "default": "SIMULATION"
+          },
+          "reports": {
+            "items": {
+              "$ref": "#/components/schemas/FieldReportRecord"
+            },
+            "type": "array",
+            "title": "Reports"
+          },
+          "limit": {
+            "type": "integer",
+            "const": 100,
+            "title": "Limit",
+            "default": 100
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["edge_id", "reports"],
+        "title": "FieldReportHistory"
+      },
       "FieldReportReceipt": {
         "properties": {
           "request_id": {
@@ -470,6 +592,39 @@
         "type": "object",
         "required": ["request_id", "received_at"],
         "title": "FieldReportReceipt"
+      },
+      "FieldReportRecord": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Received At"
+          },
+          "status": {
+            "type": "string",
+            "const": "accepted",
+            "title": "Status",
+            "default": "accepted"
+          },
+          "edge_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Edge Id"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["request_id", "received_at", "edge_id", "text"],
+        "title": "FieldReportRecord"
       },
       "FieldReportWrite": {
         "properties": {

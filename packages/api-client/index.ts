@@ -78,3 +78,6 @@ export type MobileSession = portalComponents['schemas']['MobileSession'];
 export type FieldReportWrite = portalComponents['schemas']['FieldReportWrite'];
 export type FieldReportReceipt =
   portalComponents['schemas']['FieldReportReceipt'];
+
+export type FieldReportHistory =
+  portalComponents['schemas']['FieldReportHistory'];

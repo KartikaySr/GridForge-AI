@@ -5,6 +5,7 @@ from uuid import UUID
 from fastapi import APIRouter, Query, Request
 
 from services.portal.contracts import (
+    FieldReportHistory,
     FieldReportReceipt,
     FieldReportWrite,
     MobileSession,
@@ -13,7 +14,7 @@ from services.portal.contracts import (
     PortalLogin,
     Portfolio,
 )
-from services.portal.reports import receive_report
+from services.portal.reports import receive_report, report_history
 from services.portal.service import PortalService
 from services.sync.contracts import Stream
 
@@ -59,5 +60,9 @@ def mobile_router(dsn: str) -> APIRouter:
     @router.post("/reports", response_model=FieldReportReceipt)
     def report(request: Request, write: FieldReportWrite) -> FieldReportReceipt:
         return receive_report(dsn, identity(request), write)
+
+    @router.get("/facilities/{edge_id}/reports", response_model=FieldReportHistory)
+    def reports(request: Request, edge_id: UUID) -> FieldReportHistory:
+        return report_history(dsn, identity(request), edge_id)
 
     return router

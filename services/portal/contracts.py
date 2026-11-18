@@ -69,3 +69,15 @@ class FieldReportReceipt(Contract):
     request_id: UUID
     received_at: datetime
     status: Literal["accepted"] = "accepted"
+
+
+class FieldReportRecord(FieldReportReceipt):
+    edge_id: UUID
+    text: str
+
+
+class FieldReportHistory(Contract):
+    edge_id: UUID
+    mode: Literal["SIMULATION"] = "SIMULATION"
+    reports: list[FieldReportRecord]
+    limit: Literal[100] = 100

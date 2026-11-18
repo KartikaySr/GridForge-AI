@@ -32,7 +32,8 @@
     "portal": "uv run python -m cloud.portal",
     "portal:demo": "uv run python -m scripts.web_demo --approve-simulation",
     "mobile": "npm --workspace apps/mobile run start",
-    "mobile:export": "npm --workspace apps/mobile run export"
+    "mobile:export": "npm --workspace apps/mobile run export",
+    "demo:triangle": "uv run python -m scripts.triangle_demo --approve-simulation"
   },
   "type": "module",
   "packageManager": "npm@10.9.8",

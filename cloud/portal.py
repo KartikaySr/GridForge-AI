@@ -12,7 +12,14 @@ from fastapi.responses import JSONResponse
 
 from cloud.mobile import mobile_router
 from cloud.repository import CloudRepository
-from services.portal.contracts import PortalHistory, PortalIdentity, PortalLogin, Portfolio
+from services.portal.contracts import (
+    FieldReportHistory,
+    PortalHistory,
+    PortalIdentity,
+    PortalLogin,
+    Portfolio,
+)
+from services.portal.reports import report_history
 from services.portal.service import PortalDenied, PortalService
 from services.sync.contracts import Stream
 
@@ -127,6 +134,10 @@ def create_portal_app(
         return service.history(
             service.identity(request.cookies.get(COOKIE)), edge_id, stream, before
         )
+
+    @app.get("/api/v1/facilities/{edge_id}/reports", response_model=FieldReportHistory)
+    def reports(request: Request, edge_id: UUID) -> FieldReportHistory:
+        return report_history(dsn, service.identity(request.cookies.get(COOKIE)), edge_id)
 
     app.include_router(mobile_router(dsn))
     return app

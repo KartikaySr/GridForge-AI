@@ -1,4 +1,5 @@
 import type {
+  FieldReportHistory,
   MobileSession,
   Portfolio,
   PortalHistory,
@@ -53,6 +54,10 @@ export function client(token?: string) {
   return {
     login: (username: string, password: string) =>
       request<MobileSession>('/login', { username, password }),
+    reports: (edge: string) =>
+      request<FieldReportHistory>(
+        `/facilities/${encodeURIComponent(edge)}/reports`,
+      ),
     me: () => request<PortalIdentity>('/me'),
     logout: () => request('/logout', {}),
     portfolio: () => request<Portfolio>('/portfolio'),

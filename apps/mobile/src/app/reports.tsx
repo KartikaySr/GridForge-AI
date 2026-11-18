@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Text, TextInput } from 'react-native';
+import type { FieldReportHistory } from '@gridforge/api-client';
 import { randomUUID } from 'expo-crypto';
 import { client, storageOwner } from '../api';
 import { useSession } from '../session';
@@ -14,6 +15,10 @@ import {
 import { Button, Card, Page, styles } from '../components/ui';
 export default function Reports() {
   const { session, edge, run, busy } = useSession();
+  const [received, setReceived] = useState<FieldReportHistory | null>(null);
+  useEffect(() => {
+    setReceived(null);
+  }, [edge]);
   const [reports, setReports] = useState<PendingReport[]>([]),
     [text, setText] = useState('');
   const owner = session ? storageOwner(session.identity.id) : '';
@@ -88,6 +93,27 @@ export default function Reports() {
           })
         }
       />
+      <Button
+        title="Load synchronized history"
+        disabled={busy || !edge}
+        onPress={() =>
+          void run(async () => {
+            if (session) setReceived(await client(session.token).reports(edge));
+          })
+        }
+      />
+      {received?.edge_id === edge &&
+        received.reports.map((report) => (
+          <Card key={report.request_id}>
+            <Text style={styles.text}>RECEIVED · {report.received_at}</Text>
+            <Text style={styles.text}>{report.text}</Text>
+          </Card>
+        ))}
+      {received?.edge_id === edge && received.reports.length === 0 && (
+        <Text style={styles.text}>
+          No received field reports for this facility.
+        </Text>
+      )}
       {!reports.length && (
         <Text style={styles.text}>No local reports for this account.</Text>
       )}

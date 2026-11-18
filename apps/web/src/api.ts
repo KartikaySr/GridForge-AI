@@ -1,4 +1,5 @@
 import type {
+  FieldReportHistory,
   PortalHistory,
   PortalIdentity,
   Portfolio,
@@ -21,6 +22,10 @@ async function request<T>(path: string, body?: unknown): Promise<T> {
   return response.json() as Promise<T>;
 }
 export const api = {
+  reports: (edge: string) =>
+    request<FieldReportHistory>(
+      `/facilities/${encodeURIComponent(edge)}/reports`,
+    ),
   me: () => request<PortalIdentity>('/me'),
   login: (username: string, password: string) =>
     request<PortalIdentity>('/login', { username, password }),

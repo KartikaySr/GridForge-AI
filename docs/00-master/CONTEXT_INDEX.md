@@ -104,3 +104,5 @@ FUTURE = intentionally deferred.
 - [Mobile scope](../08-future-clients/MOBILE_PROTOTYPE_SCOPE.md)
 - [Mobile deployment and verification](../06-engineering/MOBILE_DEPLOYMENT.md)
 - [Vercel Services configuration](../06-engineering/VERCEL_DEPLOYMENT.md)
+
+- [Shared live simulation and triangle demo](../06-engineering/TRIANGLE_DEMO.md)
